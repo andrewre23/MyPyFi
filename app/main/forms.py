@@ -1,7 +1,13 @@
 from flask_wtf import Form
-from wtforms import StringField, SubmitField, DateField, SelectField
-from wtforms.validators import DataRequired
+from wtforms import StringField, FloatField, SubmitField, DateField, SelectField
+from wtforms.validators import DataRequired, NumberRange
 
+
+# define PortfolioForm to add new portfolios
+class PortfolioForm(Form):
+    name = StringField('Enter portfolio name:',validators=[DataRequired()])
+    cash = FloatField('Enter cash position (USD $):',validators=[DataRequired(),NumberRange(min=0,max=None,message='Cannot have negative cash holdings')])
+    submit = SubmitField('Submit')
 
 # define NameForm class from inherited Form class
 class NameForm(Form):

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}MyPyFi{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1><center>Portfolio Management</center></h1>
+    <p><center>Here's where you'll select your portfolio</center></p>
+</div>
+
+<div style="text-align:center">
+    <a class="button" href="{{ url_for('main.portfolio_add') }}">Add Portfolio</a>
+</div>
+
+{% if not portfolio_data|count > 0 %}
+    <h1><center>No Portfolios Found!</center></h1>
+    <p><center>There are no portfolios saved</center></p>
+{% else %}
+    <h1><center>Saved Portfolios</center></h1>
+    <table style="width:100%">
+      <tr>
+          <th><center>Name</center></th>
+          <th><center>Total Value</center></th>
+          <th><center>Number of Holdings</center></th>
+          <th><center>Oldest Holding</center></th>
+      </tr>
+      {% for portfolio in portfolio_data %}
+      <tr>
+          <td><center>{{ portfolio["name"] }}</center></td>
+          <td><button type="button">Delete Portfolio</button></td>
+      </tr>
+      {% endfor %}
+    </table>
+
+{% endif %}
+
+{% endblock %}

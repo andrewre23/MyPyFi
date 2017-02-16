@@ -1,8 +1,8 @@
 from flask import render_template, session, redirect, url_for, current_app
 from .. import db
-from ..models import User
+from ..models import Portfolio, Holding, User
 from . import main
-from .forms import NameForm, TickerForm
+from .forms import NameForm, TickerForm, PortfolioForm
 
 import datetime as dt
 
@@ -25,6 +25,18 @@ def index():
                            name=session.get('name'),
                            known=session.get('known', False))
 
+# route for portfolio homepage
+@main.route('/portfolio',methods=['GET','POST'])
+def portfolio_home():
+    return render_template('portfolio_home.html')
+
+# route for adding new portfolios
+@main.route('/portfolio_add',methods=['GET','POST'])
+def portfolio_add():
+    form = PortfolioForm()
+    if form.validate_on_submit():
+        pass
+    return render_template('portfolio_add.html',form=form)
 
 # route for ticker data management page
 @main.route('/ticker_data', methods=['GET', 'POST'])
