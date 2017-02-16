@@ -1,29 +1,31 @@
 from . import db
 
+
 class Portfolio(db.Model):
     # model for base portfolio object
     __tablename__ = 'portfolios'
-    id = db.Column(db.Integer,primary_key=True,autoincrement=True)
-    name = db.Column(db.String(25),unique=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String(25), unique=True)
     cash = db.Column(db.Float)
-    holdings = db.relationship('Holding',backref='portfolio',lazy='dynamic')
+    holdings = db.relationship('Holding', backref='portfolio', lazy='dynamic')
 
-    def __init__(self, name,cash):
+    def __init__(self, name, cash):
         self.name = name
         self.cash = cash
 
     def __repr__(self):
         return '<Name %r>' % self.name
 
+
 class Holding(db.Model):
     # model for holdings associated with portfolios
     __tablename__ = 'holdings'
-    id = db.Column(db.Integer,primary_key=True,autoincrement=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     symbol = db.Column(db.String(6))
     shares = db.Column(db.Integer)
     purch_date = db.Column(db.Date)
     purch_price = db.Column(db.Numeric)
-    portfolio_id = db.Column(db.Integer,db.ForeignKey('portfolios.id'))
+    portfolio_id = db.Column(db.Integer, db.ForeignKey('portfolios.id'))
 
     def __init__(self, symbol, shares, purch_date, purch_price):
         self.symbol = symbol
@@ -33,6 +35,7 @@ class Holding(db.Model):
 
     def __repr__(self):
         return '<Name %r>' % self.symbol
+
 
 class Ticker_Dataset(db.Model):
     # model definition for HDF5 ticker data storage
@@ -57,4 +60,3 @@ class Ticker_Dataset(db.Model):
 
     def __repr__(self):
         return '<Name %r>' % self.name
-
