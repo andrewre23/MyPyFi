@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}MyPyFi{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1><center>Ticker Data</center></h1>
+    <p><center>Here's where you'll edit the local stock ticker data</center></p>
+    <p><center>This local data is powered by HDF5 files</center></p>
+</div>
+
+<div style="text-align:center">
+    <a class="button" href="{{ url_for('main.ticker_add') }}">Add Dataset</a>
+</div>
+
+{% if not dataset|count > 0 %}
+    <h1><center>No Data Found!</center></h1>
+    <p><center>There is no data local data saved</center></p>
+{% else %}
+    <h1><center>Local HDF5 Datasets</center></h1>
+    <table style="width:100%">
+      <tr>
+          <th><center>Symbol</center></th>
+          <th><center>Name</center></th>
+          <th><center>Start</center></th>
+          <th><center>End</center></th>
+          <th><center>Freq</center></th>
+          <th><center>Vals</center></th>
+          <th><center>Location</center></th>
+      </tr>
+      {% for data in dataset %}
+      <tr>
+          <td><center>{{ data["symbol"] }}</center></td>
+          <td><center>{{ data["name"] }}</center></td>
+          <td><center>{{ data["start"] }}</center></td>
+          <td><center>{{ data["end"] }}</center></td>
+          <td><center>{{ data["freq"] }}</center></td>
+          <td><center>{{ data["vals"] }}</center></td>
+          <td><center>{{ data["location"] }}</center></td>
+          <td><button type="button">Delete Data</button></td>
+      </tr>
+      {% endfor %}
+    </table>
+
+{% endif %}
+
+{% endblock %}
