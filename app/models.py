@@ -8,6 +8,13 @@ class Portfolio(db.Model):
     cash = db.Column(db.Float)
     holdings = db.relationship('Holding',backref='portfolio',lazy='dynamic')
 
+    def __init__(self, name,cash):
+        self.name = name
+        self.cash = cash
+
+    def __repr__(self):
+        return '<Name %r>' % self.name
+
 class Holding(db.Model):
     # model for holdings associated with portfolios
     __tablename__ = 'holdings'
@@ -18,6 +25,14 @@ class Holding(db.Model):
     purch_price = db.Column(db.Numeric)
     portfolio_id = db.Column(db.Integer,db.ForeignKey('portfolios.id'))
 
+    def __init__(self, symbol, shares, purch_date, purch_price):
+        self.symbol = symbol
+        self.shares = shares
+        self.purch_date = purch_date
+        self.purch_price = purch_price
+
+    def __repr__(self):
+        return '<Name %r>' % self.symbol
 
 class Ticker_Dataset(db.Model):
     # model definition for HDF5 ticker data storage
@@ -43,22 +58,3 @@ class Ticker_Dataset(db.Model):
     def __repr__(self):
         return '<Name %r>' % self.name
 
-
-class Role(db.Model):
-    __tablename__ = 'roles'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), unique=True)
-    users = db.relationship('User', backref='role', lazy='dynamic')
-
-    def __repr__(self):
-        return '<Role %r>' % self.name
-
-
-class User(db.Model):
-    __tablename__ = 'users'
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(64), unique=True, index=True)
-    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
-
-    def __repr__(self):
-        return '<User %r>' % self.username
