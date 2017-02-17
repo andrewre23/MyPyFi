@@ -2,7 +2,7 @@ from flask import render_template, session, redirect, url_for, flash, abort
 from .. import db
 from ..models import Portfolio, Holding, User
 from . import main
-from .forms import NameForm, TickerForm, PortfolioForm
+from .forms import NameForm, TickerForm, PortfolioForm, HoldingForm
 
 import datetime as dt
 
@@ -62,17 +62,9 @@ def portfolio(name):
 # route for adding new holdings
 @main.route('/holding_add', methods=['GET', 'POST'])
 def holding_add():
-    form = PortfolioForm()
+    form = HoldingForm()
     if form.validate_on_submit():
-        portfolio = Portfolio.query.filter_by(name=form.name.data).first()
-        if portfolio is None:
-            portfolio = Portfolio(name=form.name.data, cash=round(form.cash.data, 2))
-            db.session.add(portfolio)
-            session['portfolio'] = portfolio.name
-            flash('Portfolio successfully added!')
-            return redirect(url_for('.portfolio_main'))
-        else:
-            flash('That portfolio name is already taken')
+        pass
     return render_template('portfolio_add.html', form=form)
 
 
