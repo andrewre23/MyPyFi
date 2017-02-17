@@ -5,9 +5,11 @@ from wtforms.validators import DataRequired, NumberRange
 
 # define PortfolioForm to add new portfolios
 class PortfolioForm(Form):
-    name = StringField('Enter portfolio name:',validators=[DataRequired()])
-    cash = FloatField('Enter cash position (USD $):',validators=[DataRequired(),NumberRange(min=0,max=None,message='Cannot have negative cash holdings')])
-    submit = SubmitField('Submit')
+    name = StringField('Enter portfolio name:', validators=[DataRequired()])
+    cash = FloatField('Enter cash position (USD $):', validators=[DataRequired(), NumberRange(min=0, max=None,
+                                                                                              message='Cannot have negative cash holdings')])
+    submit = SubmitField('Add Portfolio')
+
 
 # define NameForm class from inherited Form class
 class NameForm(Form):
