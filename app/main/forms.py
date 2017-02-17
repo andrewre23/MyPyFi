@@ -17,10 +17,13 @@ class PortfolioForm(Form):
 # define HoldingForm to add new portfolios
 class HoldingForm(Form):
     symbol = StringField('Enter ticker symbol:', validators=[DataRequired()])
-    shares = IntegerField('Enter number of shares to be held:', validators=[DataRequired(), NumberRange(min=0, max=None,
-                                                                                                        message='Cannot have negative holdings')])
+    shares = IntegerField('Enter number of shares to be held:', validators=[NumberRange(min=0, max=None,
+                                                                                        message='Not a valid position'),
+                                                                            DataRequired()])
     purch_date = DateField('Enter date purchased', default=dt.date.today())
-    purch_price = FloatField('Enter purchase price:')
+    purch_price = FloatField('Enter purchase price:',
+                             validators=[NumberRange(min=0, max=None, message='Cannot enter negative prices'),
+                                         DataRequired()])
     submit = SubmitField('Add Holding')
 
     # ensure symbol entered is one that yahoo finance has data for
