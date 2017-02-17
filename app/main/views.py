@@ -29,7 +29,8 @@ def index():
 # route for portfolio homepage
 @main.route('/portfolio', methods=['GET', 'POST'])
 def portfolio_main():
-    return render_template('portfolio_main.html')
+    portfolio_data = Portfolio.query.all()
+    return render_template('portfolio_main.html', portfolio_data=portfolio_data)
 
 
 # route for adding new portfolios
@@ -37,8 +38,15 @@ def portfolio_main():
 def portfolio_add():
     form = PortfolioForm()
     if form.validate_on_submit():
-        flash('Portfolio successfully added!')
-        return redirect(url_for('.portfolio_main'))
+        portfolio = Portfolio.query.filter_by(name=form.name.data).first()
+        if portfolio is None:
+            portfolio = Portfolio(name=form.name.data,cash=form.cash.data)
+            db.session.add(portfolio)
+            session['portfolio'] = portfolio.name
+            flash('Portfolio successfully added!')
+            return redirect(url_for('.portfolio_main'))
+        else:
+            flash('That portfolio name is already taken')
     return render_template('portfolio_add.html', form=form)
 
 
