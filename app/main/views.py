@@ -27,7 +27,7 @@ def index():
 
 
 # route for portfolio homepage
-@main.route('/portfolio', methods=['GET', 'POST'])
+@main.route('/portfolio_main', methods=['GET', 'POST'])
 def portfolio_main():
     portfolio_data = Portfolio.query.all()
     return render_template('portfolio_main.html', portfolio_data=portfolio_data)
@@ -48,6 +48,11 @@ def portfolio_add():
         else:
             flash('That portfolio name is already taken')
     return render_template('portfolio_add.html', form=form)
+
+# route for portfolio-specific pages
+@main.route('/portfolio/<name>')
+def portfolio(name):
+    return render_template('portfolio.html', name=name)
 
 
 # route for ticker data management page
