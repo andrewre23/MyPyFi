@@ -5,19 +5,19 @@
 
 {% block page_content %}
 <div class="page-header">
-    <h1><center>Portfolio Management</center></h1>
-    <p><center>Here's where you'll select your portfolio</center></p>
+    <h1><center>{{ name }}</center></h1>
+    <p><center>Here's where manage and edit your portfolio</center></p>
 </div>
 
 <div style="text-align:center">
-    <a class="button" href="{{ url_for('main.portfolio_add') }}">Add Portfolio</a>
+    <a class="button" href="{{ url_for('main.holding_add') }}">Add Holding</a>
 </div>
 
-{% if not portfolio_data|count > 0 %}
-    <h1><center>No Portfolios Found!</center></h1>
-    <p><center>There are no portfolios saved</center></p>
+{% if not holding_data|count > 0 %}
+    <h1><center>No Holdings Found!</center></h1>
+    <p><center>There are no holdings saved in the portfolio {{ name }}</center></p>
 {% else %}
-    <h1><center>Saved Portfolios</center></h1>
+    <h1><center>Holdings</center></h1>
     <table style="width:100%">
       <tr>
           <th><center>Name</center></th>
@@ -25,10 +25,10 @@
           <th><center>Number of Holdings</center></th>
           <th><center>Oldest Holding</center></th>
       </tr>
-      {% for portfolio in portfolio_data %}
+      {% for holding in holding_data %}
       <tr>
-          <td><center>{{ portfolio["name"] }}</center></td>
-          <td><center>{{ "${:,.2f}".format(portfolio["cash"]) }}</center></td>
+          <td><center>{{ holding["name"] }}</center></td>
+          <td><center>{{ "${:,.2f}".format(holding["cash"]) }}</center></td>
           <td><center> </center></td>
           <td><center> </center></td>
           <td><button type="button">Select</button></td>
