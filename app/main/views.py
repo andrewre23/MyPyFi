@@ -57,6 +57,23 @@ def portfolio(name):
         abort(404)
     return render_template('portfolio.html', name=name)
 
+# route for adding new holdings
+@main.route('/holding_add', methods=['GET', 'POST'])
+def holding_add():
+    form = PortfolioForm()
+    if form.validate_on_submit():
+        portfolio = Portfolio.query.filter_by(name=form.name.data).first()
+        if portfolio is None:
+            portfolio = Portfolio(name=form.name.data, cash=round(form.cash.data, 2))
+            db.session.add(portfolio)
+            session['portfolio'] = portfolio.name
+            flash('Portfolio successfully added!')
+            return redirect(url_for('.portfolio_main'))
+        else:
+            flash('That portfolio name is already taken')
+    return render_template('portfolio_add.html', form=form)
+
+
 
 # route for ticker data management page
 @main.route('/ticker_data', methods=['GET', 'POST'])
