@@ -1,7 +1,8 @@
 import datetime as dt
+from pandas_datareader import data as web
 from flask_wtf import Form
 from wtforms import StringField, FloatField, SubmitField, DateField, SelectField, IntegerField
-from wtforms.validators import DataRequired, NumberRange
+from wtforms.validators import DataRequired, NumberRange, ValidationError
 
 
 # define PortfolioForm to add new portfolios
@@ -15,12 +16,19 @@ class PortfolioForm(Form):
 
 # define HoldingForm to add new portfolios
 class HoldingForm(Form):
-    symbol = StringField('Enter ticker symbol:',validators=[DataRequired()])
-    shares = IntegerField('Enter number of shares to be held:',validators=[DataRequired(), NumberRange(min=0, max=None,
-                                                                                              message='Cannot have negative holdings')])
-    purch_date = DateField('Enter date purchased',default=dt.date.today())
+    symbol = StringField('Enter ticker symbol:', validators=[DataRequired()])
+    shares = IntegerField('Enter number of shares to be held:', validators=[DataRequired(), NumberRange(min=0, max=None,
+                                                                                                        message='Cannot have negative holdings')])
+    purch_date = DateField('Enter date purchased', default=dt.date.today())
     purch_price = FloatField('Enter purchase price:')
     submit = SubmitField('Add Holding')
+
+    # ensure symbol entered is one that yahoo finance has data for
+    def validate_symbol(form, field):
+        try:
+            test = web.DataReader(str(field.data).capitalize(), 'yahoo')
+        except:
+            raise ValidationError('No symbol under that name found')
 
 
 # define NameForm class from inherited Form class
