@@ -40,7 +40,7 @@ def portfolio_add():
     if form.validate_on_submit():
         portfolio = Portfolio.query.filter_by(name=form.name.data).first()
         if portfolio is None:
-            portfolio = Portfolio(name=form.name.data,cash=form.cash.data)
+            portfolio = Portfolio(name=form.name.data, cash=round(form.cash.data, 2))
             db.session.add(portfolio)
             session['portfolio'] = portfolio.name
             flash('Portfolio successfully added!')
