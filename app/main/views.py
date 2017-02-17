@@ -1,8 +1,8 @@
 from flask import render_template, session, redirect, url_for, flash, abort
 from .. import db
-from ..models import Portfolio, Holding, User
+from ..models import Portfolio, Holding
 from . import main
-from .forms import NameForm, TickerForm, PortfolioForm, HoldingForm
+from .forms import TickerForm, PortfolioForm, HoldingForm
 
 import datetime as dt
 
