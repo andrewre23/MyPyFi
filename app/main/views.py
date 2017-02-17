@@ -49,6 +49,7 @@ def portfolio_add():
             flash('That portfolio name is already taken')
     return render_template('portfolio_add.html', form=form)
 
+
 # route for portfolio-specific pages
 @main.route('/portfolio/<name>')
 def portfolio(name):
@@ -56,6 +57,7 @@ def portfolio(name):
     if portfolio is None:
         abort(404)
     return render_template('portfolio.html', name=name)
+
 
 # route for adding new holdings
 @main.route('/holding_add', methods=['GET', 'POST'])
@@ -72,7 +74,6 @@ def holding_add():
         else:
             flash('That portfolio name is already taken')
     return render_template('portfolio_add.html', form=form)
-
 
 
 # route for ticker data management page
