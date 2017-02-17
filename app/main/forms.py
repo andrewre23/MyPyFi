@@ -20,10 +20,10 @@ class HoldingForm(Form):
     shares = IntegerField('Enter number of shares to be held:', validators=[NumberRange(min=0, max=None,
                                                                                         message='Not a valid position'),
                                                                             DataRequired()])
-    purch_date = DateField('Enter date purchased', default=dt.date.today())
     purch_price = FloatField('Enter purchase price:',
                              validators=[NumberRange(min=0, max=None, message='Cannot enter negative prices'),
                                          DataRequired()])
+    purch_date = DateField('Enter date purchased', default=dt.date.today())
     submit = SubmitField('Add Holding')
 
     # ensure symbol entered is one that yahoo finance has data for
