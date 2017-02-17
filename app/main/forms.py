@@ -1,5 +1,6 @@
+import datetime as dt
 from flask_wtf import Form
-from wtforms import StringField, FloatField, SubmitField, DateField, SelectField
+from wtforms import StringField, FloatField, SubmitField, DateField, SelectField, IntegerField
 from wtforms.validators import DataRequired, NumberRange
 
 
@@ -14,10 +15,12 @@ class PortfolioForm(Form):
 
 # define HoldingForm to add new portfolios
 class HoldingForm(Form):
-    name = StringField('Enter portfolio name:', validators=[DataRequired()])
-    cash = FloatField('Enter cash position (USD $):', validators=[DataRequired(), NumberRange(min=0, max=None,
-                                                                                              message='Cannot have negative cash holdings')])
-    submit = SubmitField('Add Portfolio')
+    symbol = StringField('Enter ticker symbol:',validators=[DataRequired()])
+    shares = IntegerField('Enter number of shares to be held:',validators=[DataRequired(), NumberRange(min=0, max=None,
+                                                                                              message='Cannot have negative holdings')])
+    purch_date = DateField('Enter date purchased',default=dt.date.today())
+    purch_price = FloatField('Enter purchase price:')
+    submit = SubmitField('Add Holding')
 
 
 # define NameForm class from inherited Form class
