@@ -1,4 +1,4 @@
-from flask import render_template, session, redirect, url_for, current_app, flash
+from flask import render_template, session, redirect, url_for, flash, abort
 from .. import db
 from ..models import Portfolio, Holding, User
 from . import main
@@ -52,6 +52,9 @@ def portfolio_add():
 # route for portfolio-specific pages
 @main.route('/portfolio/<name>')
 def portfolio(name):
+    portfolio = Portfolio.query.filter_by(name=name).first()
+    if portfolio is None:
+        abort(404)
     return render_template('portfolio.html', name=name)
 
 
