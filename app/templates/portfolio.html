@@ -33,7 +33,7 @@
           <td><center>{{ holding["purch_date"] }}</center></td>
           <td><center>{{ "${:,.2f}".format(holding["purch_price"]) }}</center></td>
           <td><center>{{ "${:,.2f}".format(holding["purch_price"]*holding["shares"]) }}</center></td>
-          <td><button type="button">Delete</button></td>
+          <td><button type="button">Remove</button></td>
       </tr>
       {% endfor %}
     </table>
