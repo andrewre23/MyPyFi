@@ -29,9 +29,7 @@ def index():
 # route for portfolio homepage
 @main.route('/portfolio_main', methods=['GET', 'POST'])
 def portfolio_main():
-    portfolio_data = Portfolio.query.all()
-    if portfolio_data is not None:
-        session['portfolio'] = str(portfolio_data[0].name)
+    portfolio_data = Portfolio.query.order_by(Portfolio.name).all()
     return render_template('portfolio_main.html', portfolio_data=portfolio_data)
 
 
@@ -58,6 +56,8 @@ def portfolio(name):
     portfolio = Portfolio.query.filter_by(name=name).first()
     if portfolio is None:
         abort(404)
+    else:
+        session['portfolio'] = str(portfolio.name)
     return render_template('portfolio.html', name=name)
 
 
