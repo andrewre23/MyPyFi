@@ -30,6 +30,8 @@ def index():
 @main.route('/portfolio_main', methods=['GET', 'POST'])
 def portfolio_main():
     portfolio_data = Portfolio.query.all()
+    if portfolio_data is not None:
+        session['portfolio'] = str(portfolio_data[0].name)
     return render_template('portfolio_main.html', portfolio_data=portfolio_data)
 
 
@@ -65,7 +67,7 @@ def holding_add():
     form = HoldingForm()
     if form.validate_on_submit():
         pass
-    return render_template('portfolio_add.html', form=form)
+    return render_template('holding_add.html', form=form)
 
 
 # route for ticker data management page
