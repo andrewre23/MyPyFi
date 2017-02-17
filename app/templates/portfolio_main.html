@@ -28,7 +28,7 @@
       {% for portfolio in portfolio_data %}
       <tr>
           <td><center>{{ portfolio["name"] }}</center></td>
-          <td><center>${{ portfolio["cash"] }}</center></td>
+          <td><center>{{ "${:,.2f}".format(portfolio["cash"]) }}</center></td>
           <td><center> </center></td>
           <td><center> </center></td>
           <td><button type="button">Select</button></td>
