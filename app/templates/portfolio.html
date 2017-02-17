@@ -28,7 +28,7 @@
       </tr>
       {% for holding in holding_data %}
       <tr>
-          <td><center>{{ holding["symbol"] }}</center></td>
+          <td><center>{{ holding["symbol"] | upper }}</center></td>
           <td><center>{{ holding["shares"] }}</center></td>
           <td><center>{{ holding["purch_date"] }}</center></td>
           <td><center>{{ "${:,.2f}".format(holding["purch_price"]) }}</center></td>
