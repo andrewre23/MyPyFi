@@ -24,7 +24,7 @@ class Holding(db.Model):
     symbol = db.Column(db.String(6))
     shares = db.Column(db.Integer)
     purch_date = db.Column(db.Date)
-    purch_price = db.Column(db.Numeric)
+    purch_price = db.Column(db.Float)
     portfolio_id = db.Column(db.Integer, db.ForeignKey('portfolios.id'))
 
     def __init__(self, symbol, shares, purch_date, purch_price):

@@ -10,20 +10,7 @@ import datetime as dt
 # route for main index homepage
 @main.route('/', methods=['GET', 'POST'])
 def index():
-    form = NameForm()
-    if form.validate_on_submit():
-        user = User.query.filter_by(username=form.name.data).first()
-        if user is None:
-            user = User(username=form.name.data)
-            db.session.add(user)
-            session['known'] = False
-        else:
-            session['known'] = True
-        session['name'] = form.name.data
-        return redirect(url_for('.index'))
-    return render_template('index.html',
-                           name=session.get('name'),
-                           known=session.get('known', False))
+    return render_template('index.html')
 
 
 # route for portfolio homepage
@@ -58,7 +45,8 @@ def portfolio(name):
         abort(404)
     else:
         session['portfolio'] = str(portfolio.name)
-    return render_template('portfolio.html', name=name)
+    holding_data = portfolio.holdings.order_by(Holding.symbol).all()
+    return render_template('portfolio.html', name=name, holding_data=holding_data)
 
 
 # route for adding new holdings
@@ -66,7 +54,13 @@ def portfolio(name):
 def holding_add():
     form = HoldingForm()
     if form.validate_on_submit():
-        pass
+        holding = Holding(symbol=str(form.symbol.data).capitalize(), shares=form.shares.data, purch_date=form.purch_date.data,
+                          purch_price=round(form.purch_price.data, 2))
+        portfolio_name=session['portfolio']
+        holding.portfolio_id=Portfolio.query.filter_by(name=portfolio_name).first().id
+        db.session.add(holding)
+        flash('Holding successfully added!')
+        return redirect(url_for('.holding_add'))
     return render_template('holding_add.html', form=form)
 
 
@@ -91,9 +85,3 @@ def ticker_add():
         pass
 
     return render_template('ticker_add.html', form=form)
-
-
-# route for user-specific pages
-@main.route('/user/<name>')
-def user(name):
-    return render_template('user.html', name=name)

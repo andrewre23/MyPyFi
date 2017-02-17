@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import os
 from app import create_app, db
-from app.models import Ticker_Dataset
+from app.models import Portfolio, Holding
 from flask_script import Manager, Shell
 from flask_migrate import Migrate, MigrateCommand
 
@@ -11,7 +11,7 @@ migrate = Migrate(app, db)
 
 
 def make_shell_context():
-    return dict(app=app, db=db, Ticker_Dataset=Ticker_Dataset)
+    return dict(app=app, db=db, Portfolio=Portfolio, Holding=Holding)
 
 
 manager.add_command("shell", Shell(make_context=make_shell_context))
