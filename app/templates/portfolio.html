@@ -20,18 +20,19 @@
     <h1><center>Holdings</center></h1>
     <table style="width:100%">
       <tr>
-          <th><center>Name</center></th>
-          <th><center>Total Value</center></th>
-          <th><center>Number of Holdings</center></th>
-          <th><center>Oldest Holding</center></th>
+          <th><center>Symbol</center></th>
+          <th><center>Shares</center></th>
+          <th><center>Purchase Date</center></th>
+          <th><center>Purchase Price</center></th>
+          <th><center>Market Value</center></th>
       </tr>
       {% for holding in holding_data %}
       <tr>
-          <td><center>{{ holding["name"] }}</center></td>
-          <td><center>{{ "${:,.2f}".format(holding["cash"]) }}</center></td>
-          <td><center> </center></td>
-          <td><center> </center></td>
-          <td><button type="button">Select</button></td>
+          <td><center>{{ holding["symbol"] }}</center></td>
+          <td><center>{{ holding["shares"] }}</center></td>
+          <td><center>{{ holding["purch_date"] }}</center></td>
+          <td><center>{{ "${:,.2f}".format(holding["purch_price"]) }}</center></td>
+          <td><center>{{ "${:,.2f}".format(holding["purch_price"]*holding["shares"]) }}</center></td>
           <td><button type="button">Delete</button></td>
       </tr>
       {% endfor %}
