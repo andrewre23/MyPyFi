@@ -2,7 +2,7 @@ import datetime as dt
 from pandas_datareader import data as web
 from flask_wtf import Form
 from wtforms import StringField, FloatField, SubmitField, DateField, SelectField, IntegerField
-from wtforms.validators import DataRequired, NumberRange, ValidationError
+from wtforms.validators import DataRequired, NumberRange, ValidationError, Optional
 
 
 # define PortfolioForm to add new portfolios
@@ -12,6 +12,13 @@ class PortfolioForm(Form):
                       validators=[NumberRange(min=0, max=None, message='Cannot have negative cash holdings'),
                                   DataRequired()])
     submit = SubmitField('Add Portfolio')
+
+# define PortfolioForm to add new portfolios
+class PortfolioEditForm(Form):
+    newname = StringField('Enter new portfolio name:',validators=[Optional()])
+    newcash = FloatField('Enter new cash position (USD $):',
+                      validators=[NumberRange(min=0, max=None, message='Cannot have negative cash holdings'),Optional()])
+    submit = SubmitField('Update Data')
 
 
 # define HoldingForm to add new portfolios
@@ -32,12 +39,6 @@ class HoldingForm(Form):
             test = web.DataReader(str(field.data).capitalize(), 'yahoo')
         except:
             raise ValidationError('No symbol under that name found')
-
-
-# define NameForm class from inherited Form class
-class NameForm(Form):
-    name = StringField('What is your name?', validators=[DataRequired()])
-    submit = SubmitField('Submit')
 
 
 # define TickerForm class for adding new HDF5 ticker data
