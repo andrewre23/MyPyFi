@@ -13,9 +13,9 @@ def index():
     return render_template('index.html')
 
 
-#############
+#######################
 # portfolio routes
-#############
+#######################
 
 
 # route for portfolio homepage
@@ -114,9 +114,9 @@ def holding_add():
     return render_template('holding_add.html', form=form)
 
 
-#############
+#######################
 # ticker routes
-#############
+#######################
 
 # route for ticker data management page
 @main.route('/ticker_data', methods=['GET', 'POST'])
