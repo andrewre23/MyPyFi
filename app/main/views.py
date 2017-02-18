@@ -12,6 +12,7 @@ import datetime as dt
 def index():
     return render_template('index.html')
 
+
 #############
 # portfolio routes
 #############
@@ -52,6 +53,7 @@ def portfolio(name):
     holding_data = portfolio.holdings.order_by(Holding.symbol).all()
     return render_template('portfolio.html', name=name, holding_data=holding_data)
 
+
 # route for deleting portfolios
 @main.route('/portfolio/<name>/delete')
 def portfolio_delete_ask(name):
@@ -61,6 +63,7 @@ def portfolio_delete_ask(name):
     else:
         session['portfolio'] = str(portfolio.name)
     return render_template('portfolio_delete.html', name=name)
+
 
 # route for deleting portfolios
 @main.route('/portfolio/delete')
@@ -75,19 +78,22 @@ def portfolio_delete():
     session['portfolio'] = None
     return redirect(url_for('.portfolio_main'))
 
+
 # route for adding new holdings
 @main.route('/holding_add', methods=['GET', 'POST'])
 def holding_add():
     form = HoldingForm()
     if form.validate_on_submit():
-        holding = Holding(symbol=str(form.symbol.data).capitalize(), shares=form.shares.data, purch_date=form.purch_date.data,
+        holding = Holding(symbol=str(form.symbol.data).capitalize(), shares=form.shares.data,
+                          purch_date=form.purch_date.data,
                           purch_price=round(form.purch_price.data, 2))
-        portfolio_name=session['portfolio']
-        holding.portfolio_id=Portfolio.query.filter_by(name=portfolio_name).first().id
+        portfolio_name = session['portfolio']
+        holding.portfolio_id = Portfolio.query.filter_by(name=portfolio_name).first().id
         db.session.add(holding)
         flash('Holding successfully added!')
         return redirect(url_for('.holding_add'))
     return render_template('holding_add.html', form=form)
+
 
 #############
 # ticker routes
