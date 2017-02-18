@@ -48,6 +48,25 @@ def portfolio(name):
     holding_data = portfolio.holdings.order_by(Holding.symbol).all()
     return render_template('portfolio.html', name=name, holding_data=holding_data)
 
+# route for deleting portfolios
+@main.route('/portfolio/<name>/delete')
+def portfolio_delete_ask(name):
+    portfolio = Portfolio.query.filter_by(name=name).first()
+    if portfolio is None:
+        abort(404)
+    else:
+        session['portfolio'] = str(portfolio.name)
+    return render_template('portfolio_delete.html', name=name)
+
+# route for deleting portfolios
+@main.route('/portfolio/delete')
+def portfolio_delete(name):
+    # portfolio = Portfolio.query.filter_by(name=name).first()
+    # db.session.delete(portfolio)
+    # db.session.commit()
+    flash('Portfolio deleted!')
+    # session['portfolio'] = None
+    return redirect(url_for('.portfolio_main'))
 
 # route for adding new holdings
 @main.route('/holding_add', methods=['GET', 'POST'])
