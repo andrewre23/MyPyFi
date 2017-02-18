@@ -2,7 +2,7 @@ from flask import render_template, session, redirect, url_for, flash, abort
 from .. import db
 from ..models import Portfolio, Holding
 from . import main
-from .forms import TickerForm, PortfolioForm, HoldingForm
+from .forms import TickerForm, PortfolioForm, PortfolioEditForm, HoldingForm
 
 import datetime as dt
 
@@ -52,6 +52,25 @@ def portfolio(name):
         session['portfolio'] = str(portfolio.name)
     holding_data = portfolio.holdings.order_by(Holding.symbol).all()
     return render_template('portfolio.html', name=name, holding_data=holding_data)
+
+# route for adding new portfolios
+@main.route('/portfolio/<name>/edit', methods=['GET', 'POST'])
+def portfolio_edit(name):
+    form = PortfolioEditForm()
+    if form.validate_on_submit():
+        portfolio = Portfolio.query.filter_by(name=session['portfolio']).first()
+        if portfolio is not None:
+            if form.newname.data:
+                portfolio.name = form.newname.data
+            if form.newcash.data or form.newcash.data == 0:
+                portfolio.cash = form.newcash.data
+            db.session.add(portfolio)
+            session['portfolio'] = portfolio.name
+            flash('Portfolio data successfully updated!')
+            return redirect(url_for('.portfolio_main'))
+        else:
+            flash('Error updating portfolio data')
+    return render_template('portfolio_edit.html', name= name, form=form)
 
 
 # route for deleting portfolios
