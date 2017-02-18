@@ -71,6 +71,7 @@
 
 {% endif %}
 <div style="text-align:center">
+    <a class="button" href="{{ url_for('main.portfolio_edit', name=name) }}">Edit Portfolio Data</a>
     <a class="button" href="{{ url_for('main.portfolio_delete_ask', name=name) }}">Delete Portfolio</a>
 </div>
 {% endblock %}
