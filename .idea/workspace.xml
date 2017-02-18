@@ -552,13 +552,6 @@
       <option name="presentableId" value="Default" />
       <updated>1475208834294</updated>
     </task>
-    <task id="LOCAL-00001" summary="added portfolio and holding models">
-      <created>1487223461469</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1487223461469</updated>
-    </task>
     <task id="LOCAL-00002" summary="added portfolio and holding models">
       <created>1487223733763</created>
       <option name="number" value="00002" />
@@ -895,7 +888,14 @@
       <option name="project" value="LOCAL" />
       <updated>1487394766084</updated>
     </task>
-    <option name="localTasksCounter" value="50" />
+    <task id="LOCAL-00050" summary="added views for deleting portfolios">
+      <created>1487394769865</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1487394769865</updated>
+    </task>
+    <option name="localTasksCounter" value="51" />
     <servers />
   </component>
   <component name="TodoView">
