@@ -66,10 +66,12 @@ def portfolio_delete_ask(name):
 @main.route('/portfolio/delete')
 def portfolio_delete():
     portfolio = Portfolio.query.filter_by(name=session['portfolio']).first()
+    holdinglist = Holding.query.filter_by(portfolio_id=portfolio.id).all()
     db.session.delete(portfolio)
+    for holding in holdinglist:
+        db.session.delete(holding)
     db.session.commit()
-    flash('Portfolio deleted!')
-    flash(session['portfolio'])
+    flash(session['portfolio'] + ' successfully deleted!')
     session['portfolio'] = None
     return redirect(url_for('.portfolio_main'))
 
