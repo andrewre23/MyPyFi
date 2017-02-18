@@ -31,8 +31,7 @@
           <td><center>{{ "${:,.2f}".format(portfolio["cash"]) }}</center></td>
           <td><center> </center></td>
           <td><center> </center></td>
-          <td><a class="button" href="{{ url_for('main.portfolio', name=portfolio['name']) }}">Select</a></td>
-          <td><button type="button">Delete</button></td>
+          <td><a class="button" href="{{ url_for('main.portfolio', name=portfolio['name']) }}">View Portfolio</a></td>
       </tr>
       {% endfor %}
     </table>
