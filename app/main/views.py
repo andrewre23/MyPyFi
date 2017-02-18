@@ -12,6 +12,10 @@ import datetime as dt
 def index():
     return render_template('index.html')
 
+#############
+# portfolio routes
+#############
+
 
 # route for portfolio homepage
 @main.route('/portfolio_main', methods=['GET', 'POST'])
@@ -60,12 +64,13 @@ def portfolio_delete_ask(name):
 
 # route for deleting portfolios
 @main.route('/portfolio/delete')
-def portfolio_delete(name):
-    # portfolio = Portfolio.query.filter_by(name=name).first()
-    # db.session.delete(portfolio)
-    # db.session.commit()
+def portfolio_delete():
+    portfolio = Portfolio.query.filter_by(name=session['portfolio']).first()
+    db.session.delete(portfolio)
+    db.session.commit()
     flash('Portfolio deleted!')
-    # session['portfolio'] = None
+    flash(session['portfolio'])
+    session['portfolio'] = None
     return redirect(url_for('.portfolio_main'))
 
 # route for adding new holdings
@@ -82,6 +87,9 @@ def holding_add():
         return redirect(url_for('.holding_add'))
     return render_template('holding_add.html', form=form)
 
+#############
+# ticker routes
+#############
 
 # route for ticker data management page
 @main.route('/ticker_data', methods=['GET', 'POST'])
