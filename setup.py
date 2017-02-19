@@ -9,6 +9,8 @@ def reqs(*fns):
 setup(name='MyPyFi',
       author='Andrew Edmonds',
       author_email='andrewre@umich.edu',
+      description=('My centralized hub for financial analytics.'),
+      long_description=('README'),
       version='0.1',
       packages=find_packages(),
       install_requires=reqs('base'),
