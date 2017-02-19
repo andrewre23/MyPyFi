@@ -24,6 +24,7 @@ def index():
 def portfolio_main():
     if not session.get('last_update', None) == str(dt.date.today()):
         update_all_market_vals()
+        session['last_update'] = str(dt.date.today())
     portfolio_data = Portfolio.query.order_by(Portfolio.name).all()
     return render_template('portfolio_main.html', portfolio_data=portfolio_data)
 
