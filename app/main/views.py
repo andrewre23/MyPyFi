@@ -71,10 +71,10 @@ def portfolio_edit(name):
             return redirect(url_for('.portfolio_main'))
         else:
             flash('Error updating portfolio data')
-    return render_template('portfolio_edit.html', name= name, form=form)
+    return render_template('portfolio_edit.html', name=name, form=form)
 
 
-# route for deleting portfolios
+# route for confirming deletion of portfolios
 @main.route('/portfolio/<name>/delete')
 def portfolio_delete_ask(name):
     portfolio = Portfolio.query.filter_by(name=name).first()
@@ -99,38 +99,65 @@ def portfolio_delete():
     return redirect(url_for('.portfolio_main'))
 
 
+#######################
+# holding routes
+#######################
+
+
 # route for adding new holdings
 @main.route('/portfolio/<name>/holding_add', methods=['GET', 'POST'])
 def holding_add(name):
     form = HoldingForm()
     if form.validate_on_submit():
-        holding = Holding(symbol=str(form.symbol.data).capitalize(), shares=form.shares.data,
+        holding = Holding(symbol=str(form.symbol.data).upper(), shares=form.shares.data,
                           purch_date=form.purch_date.data,
                           purch_price=round(form.purch_price.data, 2))
         portfolio_name = session['portfolio']
         holding.portfolio_id = Portfolio.query.filter_by(name=portfolio_name).first().id
         db.session.add(holding)
+        db.session.commit()
         flash('Holding successfully added!')
-        return redirect(url_for('.holding_add',name=name))
-    return render_template('holding_add.html', form=form,name=name)
+        return redirect(url_for('.holding_add', name=name))
+    return render_template('holding_add.html', form=form, name=name)
 
 
-# route for adding new holdings
+# route for editing holdings
 @main.route('/portfolio/<name>/<symbol>/holding_edit/<holding_id>', methods=['GET', 'POST'])
-def holding_edit(name,symbol,holding_id):
+def holding_edit(name, symbol, holding_id):
     form = HoldingEditForm()
     if form.validate_on_submit():
-        holding=Holding.query.filter_by(id=holding_id).first()
+        holding = Holding.query.filter_by(id=holding_id).first()
         if form.new_shares.data or form.new_shares.data == 0:
             holding.shares = form.new_shares.data
         if form.new_purch_price.data or form.new_purch_price.data == 0:
-            holding.purch_price= round(form.new_purch_price.data,2)
+            holding.purch_price = round(form.new_purch_price.data, 2)
         if form.new_purch_date.data:
-            holding.purch_date= form.new_purch_date.data
+            holding.purch_date = form.new_purch_date.data
         db.session.add(holding)
+        db.session.commit()
         flash('Holding successfully edited!')
-        return redirect(url_for('.portfolio',name=name))
+        return redirect(url_for('.portfolio', name=name))
     return render_template('holding_edit.html', form=form, symbol=symbol)
+
+
+# route for confirming deletion of holdings
+@main.route('/portfolio/<name>/<symbol>/delete/<holding_id>')
+def holding_delete_ask(name,symbol,holding_id):
+    return render_template('holding_delete.html', name=name, symbol=symbol, holding_id=holding_id)
+
+
+# route for deleting holdings
+@main.route('/holding/<holding_id>/delete')
+def holding_delete(holding_id):
+    holding = Holding.query.filter_by(id=holding_id).first()
+    symbol = holding.symbol
+    port_id = holding.portfolio_id
+    portfolio = Portfolio.query.filter_by(id=port_id).first()
+    db.session.delete(holding)
+    db.session.commit()
+    flash(str(symbol).upper() + ' successfully deleted!')
+    return redirect(url_for('.portfolio',name=portfolio.name))
+
 
 
 #######################
