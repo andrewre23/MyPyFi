@@ -25,13 +25,15 @@ class Holding(db.Model):
     shares = db.Column(db.Integer)
     purch_date = db.Column(db.Date)
     purch_price = db.Column(db.Float)
+    last_price = db.Column(db.Float)
     portfolio_id = db.Column(db.Integer, db.ForeignKey('portfolios.id'))
 
-    def __init__(self, symbol, shares, purch_date, purch_price):
+    def __init__(self, symbol, shares, purch_date, purch_price,last_price):
         self.symbol = symbol
         self.shares = shares
         self.purch_date = purch_date
         self.purch_price = purch_price
+        self.last_price = last_price
 
     def __repr__(self):
         return '<Name %r>' % self.symbol

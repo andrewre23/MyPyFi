@@ -3,6 +3,7 @@ from .. import db
 from ..models import Portfolio, Holding
 from . import main
 from .forms import TickerForm, PortfolioForm, PortfolioEditForm, HoldingForm, HoldingEditForm
+from .functions import last_price, update_last_price
 
 import datetime as dt
 
@@ -21,6 +22,11 @@ def index():
 # route for portfolio homepage
 @main.route('/portfolio_main', methods=['GET', 'POST'])
 def portfolio_main():
+    if not session['last_update'] == str(dt.date.today()):
+        for port in Portfolio.query.all() or []:
+            for hold in Holding.query.filter_by(portfolio_id=port.id).all() or []:
+                update_last_price(hold.id)
+        session['last_update'] = str(dt.date.today())
     portfolio_data = Portfolio.query.order_by(Portfolio.name).all()
     return render_template('portfolio_main.html', portfolio_data=portfolio_data)
 
@@ -111,7 +117,8 @@ def holding_add(name):
     if form.validate_on_submit():
         holding = Holding(symbol=str(form.symbol.data).upper(), shares=form.shares.data,
                           purch_date=form.purch_date.data,
-                          purch_price=round(form.purch_price.data, 2))
+                          purch_price=round(form.purch_price.data, 2),
+                          last_price=round(last_price(str(form.symbol.data).upper()), 2))
         portfolio_name = session['portfolio']
         holding.portfolio_id = Portfolio.query.filter_by(name=portfolio_name).first().id
         db.session.add(holding)
@@ -136,28 +143,28 @@ def holding_edit(name, symbol, holding_id):
         db.session.add(holding)
         db.session.commit()
         flash('Holding successfully edited!')
-        return redirect(url_for('.portfolio', name=name))
+        return redirect(url_for('.portfolio', name=session['portfolio']))
     return render_template('holding_edit.html', form=form, symbol=symbol)
 
 
 # route for confirming deletion of holdings
 @main.route('/portfolio/<name>/<symbol>/delete/<holding_id>')
-def holding_delete_ask(name,symbol,holding_id):
-    return render_template('holding_delete.html', name=name, symbol=symbol, holding_id=holding_id)
+def holding_delete_ask(name, symbol, holding_id):
+    holding = Holding.query.filter_by(id=holding_id).first()
+    if holding is None:
+        abort(404)
+    return render_template('holding_delete.html', name=session['portfolio'], symbol=holding.symbol,
+                           holding_id=holding.id)
 
 
 # route for deleting holdings
 @main.route('/holding/<holding_id>/delete')
 def holding_delete(holding_id):
     holding = Holding.query.filter_by(id=holding_id).first()
-    symbol = holding.symbol
-    port_id = holding.portfolio_id
-    portfolio = Portfolio.query.filter_by(id=port_id).first()
     db.session.delete(holding)
     db.session.commit()
-    flash(str(symbol).upper() + ' successfully deleted!')
-    return redirect(url_for('.portfolio',name=portfolio.name))
-
+    flash(str(holding.symbol).upper() + ' successfully deleted!')
+    return redirect(url_for('.portfolio', name=session['portfolio']))
 
 
 #######################

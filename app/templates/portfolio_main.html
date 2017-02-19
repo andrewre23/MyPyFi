@@ -36,6 +36,9 @@
             <center>Total Value</center>
         </th>
         <th>
+            <center>Cash Holdings</center>
+        </th>
+        <th>
             <center>Number of Holdings</center>
         </th>
         <th>
@@ -46,6 +49,9 @@
     <tr>
         <td>
             <center>{{ portfolio["name"] }}</center>
+        </td>
+        <td>
+            <center>{{ "${:,.2f}".format(portfolio["cash"]) }}</center>
         </td>
         <td>
             <center>{{ "${:,.2f}".format(portfolio["cash"]) }}</center>

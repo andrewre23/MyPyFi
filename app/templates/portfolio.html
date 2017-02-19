@@ -33,6 +33,9 @@
             <center>Symbol</center>
         </th>
         <th>
+            <center>Last Price</center>
+        </th>
+        <th>
             <center>Shares</center>
         </th>
         <th>
@@ -49,6 +52,9 @@
     <tr>
         <td>
             <center>{{ holding["symbol"] | upper }}</center>
+        </td>
+        <td>
+            <center>{{ holding["last_price"] }}</center>
         </td>
         <td>
             <center>{{ holding["shares"] }}</center>
