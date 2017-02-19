@@ -14,6 +14,8 @@
 </div>
 
 <div style="text-align:center">
+    <a class="button" href="{{ url_for('main.portfolio_edit', name=name) }}">Edit Portfolio Data</a>
+    <p></p>
     <a class="button" href="{{ url_for('main.holding_add', name=name) }}">Add Holding</a>
 </div>
 
@@ -69,8 +71,8 @@
             <center>{{ "{:%m-%d-%Y}".format(holding["purch_date"]) }}</center>
         </td>
         <td>
-            <a class="button" href="{{ url_for('main.holding_edit', name=name, symbol=holding['symbol'], holding_id = holding['id'])}}">Edit Holding</a>
-            <a class="button" href="{{ url_for('main.holding_delete_ask', name=name, symbol=holding['symbol'], holding_id = holding['id'])}}">Delete Holding</a>
+            <a class="button" href="{{ url_for('main.holding_edit', name=name, symbol=holding['symbol'], holding_id = holding['id'])}}">Edit</a>
+            <a class="button" href="{{ url_for('main.holding_delete_ask', name=name, symbol=holding['symbol'], holding_id = holding['id'])}}">Delete</a>
         </td>
     </tr>
     {% endfor %}
@@ -78,7 +80,6 @@
 
 {% endif %}
 <div style="text-align:center">
-    <a class="button" href="{{ url_for('main.portfolio_edit', name=name) }}">Edit Portfolio Data</a>
     <a class="button" href="{{ url_for('main.portfolio_delete_ask', name=name) }}">Delete Portfolio</a>
 </div>
 {% endblock %}
