@@ -14,7 +14,7 @@
 </div>
 
 <div style="text-align:center">
-    <a class="button" href="{{ url_for('main.holding_add') }}">Add Holding</a>
+    <a class="button" href="{{ url_for('main.holding_add', name=name) }}">Add Holding</a>
 </div>
 
 {% if not holding_data|count > 0 %}
@@ -63,7 +63,7 @@
             <center>{{ "${:,.2f}".format(holding["purch_price"]*holding["shares"]) }}</center>
         </td>
         <td>
-            <button type="button">Remove</button>
+            <a class="button" href="{{ url_for('main.holding_edit', name=name, holding_id = holding['id'],symbol=holding['symbol'])}}">Edit Holding</a>
         </td>
     </tr>
     {% endfor %}

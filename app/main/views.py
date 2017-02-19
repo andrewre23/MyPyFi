@@ -2,7 +2,7 @@ from flask import render_template, session, redirect, url_for, flash, abort
 from .. import db
 from ..models import Portfolio, Holding
 from . import main
-from .forms import TickerForm, PortfolioForm, PortfolioEditForm, HoldingForm
+from .forms import TickerForm, PortfolioForm, PortfolioEditForm, HoldingForm, HoldingEditForm
 
 import datetime as dt
 
@@ -53,6 +53,7 @@ def portfolio(name):
     holding_data = portfolio.holdings.order_by(Holding.symbol).all()
     return render_template('portfolio.html', name=name, holding_data=holding_data)
 
+
 # route for adding new portfolios
 @main.route('/portfolio/<name>/edit', methods=['GET', 'POST'])
 def portfolio_edit(name):
@@ -99,8 +100,8 @@ def portfolio_delete():
 
 
 # route for adding new holdings
-@main.route('/holding_add', methods=['GET', 'POST'])
-def holding_add():
+@main.route('/portfolio/<name>/holding_add', methods=['GET', 'POST'])
+def holding_add(name):
     form = HoldingForm()
     if form.validate_on_submit():
         holding = Holding(symbol=str(form.symbol.data).capitalize(), shares=form.shares.data,
@@ -110,8 +111,26 @@ def holding_add():
         holding.portfolio_id = Portfolio.query.filter_by(name=portfolio_name).first().id
         db.session.add(holding)
         flash('Holding successfully added!')
-        return redirect(url_for('.holding_add'))
-    return render_template('holding_add.html', form=form)
+        return redirect(url_for('.holding_add',name=name))
+    return render_template('holding_add.html', form=form,name=name)
+
+
+# route for adding new holdings
+@main.route('/portfolio/<name>/<symbol>/holding_edit/<holding_id>', methods=['GET', 'POST'])
+def holding_edit(name,symbol,holding_id):
+    form = HoldingEditForm()
+    if form.validate_on_submit():
+        holding=Holding.query.filter_by(id=holding_id).first()
+        if form.new_shares.data or form.new_shares.data == 0:
+            holding.shares = form.new_shares.data
+        if form.new_purch_price.data or form.new_purch_price.data == 0:
+            holding.purch_price= round(form.new_purch_price.data,2)
+        if form.new_purch_date.data:
+            holding.purch_date= form.new_purch_date.data
+        db.session.add(holding)
+        flash('Holding successfully edited!')
+        return redirect(url_for('.portfolio',name=name))
+    return render_template('holding_edit.html', form=form, symbol=symbol)
 
 
 #######################

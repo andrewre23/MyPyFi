@@ -40,6 +40,24 @@ class HoldingForm(Form):
         except:
             raise ValidationError('No symbol under that name found')
 
+# define HoldingForm to add new portfolios
+class HoldingEditForm(Form):
+    new_shares = IntegerField('Enter new number of shares to be held:', validators=[NumberRange(min=0, max=None,
+                                                                                        message='Not a valid position'),
+                                                                            Optional()])
+    new_purch_price = FloatField('Enter new purchase price:',
+                             validators=[NumberRange(min=0, max=None, message='Cannot enter negative prices'),
+                                         Optional()])
+    new_purch_date = DateField('Enter new date purchased',validators=[Optional()])
+    submit = SubmitField('Edit Holding')
+
+    # ensure symbol entered is one that yahoo finance has data for
+    def validate_symbol(form, field):
+        try:
+            test = web.DataReader(str(field.data).capitalize(), 'yahoo')
+        except:
+            raise ValidationError('No symbol under that name found')
+
 
 # define TickerForm class for adding new HDF5 ticker data
 class TickerForm(Form):
