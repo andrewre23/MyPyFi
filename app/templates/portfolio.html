@@ -33,19 +33,19 @@
             <center>Symbol</center>
         </th>
         <th>
+            <center>Market Value</center>
+        </th>
+        <th>
             <center>Last Price</center>
         </th>
         <th>
             <center>Shares</center>
         </th>
         <th>
-            <center>Purchase Date</center>
-        </th>
-        <th>
             <center>Purchase Price</center>
         </th>
         <th>
-            <center>Market Value</center>
+            <center>Purchase Date</center>
         </th>
     </tr>
     {% for holding in holding_data %}
@@ -54,19 +54,19 @@
             <center>{{ holding["symbol"] | upper }}</center>
         </td>
         <td>
-            <center>{{ holding["last_price"] }}</center>
+            <center>{{ "${:,.2f}".format(holding["last_price"]*holding["shares"]) }}</center>
+        </td>
+        <td>
+            <center>{{ "${:,.2f}".format(holding["last_price"]) }}</center>
         </td>
         <td>
             <center>{{ holding["shares"] }}</center>
         </td>
         <td>
-            <center>{{ holding["purch_date"] }}</center>
-        </td>
-        <td>
             <center>{{ "${:,.2f}".format(holding["purch_price"]) }}</center>
         </td>
         <td>
-            <center>{{ "${:,.2f}".format(holding["purch_price"]*holding["shares"]) }}</center>
+            <center>{{ "{:%m-%d-%Y}".format(holding["purch_date"]) }}</center>
         </td>
         <td>
             <a class="button" href="{{ url_for('main.holding_edit', name=name, symbol=holding['symbol'], holding_id = holding['id'])}}">Edit Holding</a>
