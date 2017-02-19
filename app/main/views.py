@@ -22,7 +22,7 @@ def index():
 # route for portfolio homepage
 @main.route('/portfolio_main', methods=['GET', 'POST'])
 def portfolio_main():
-    if not session['last_update'] == str(dt.date.today()):
+    if not session.get('last_update', None) == str(dt.date.today()):
         update_all_market_vals()
     portfolio_data = Portfolio.query.order_by(Portfolio.name).all()
     return render_template('portfolio_main.html', portfolio_data=portfolio_data)
@@ -117,7 +117,7 @@ def holding_add(name):
                           purch_date=form.purch_date.data,
                           purch_price=round(form.purch_price.data, 2),
                           last_price=round(last_price(str(form.symbol.data).upper()), 2))
-        add_hold_to_port(holding,session['portfolio'])
+        add_hold_to_port(holding, session['portfolio'])
         flash('Holding successfully added!')
         return redirect(url_for('.holding_add', name=name))
     return render_template('holding_add.html', form=form, name=name)
