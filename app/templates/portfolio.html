@@ -63,7 +63,8 @@
             <center>{{ "${:,.2f}".format(holding["purch_price"]*holding["shares"]) }}</center>
         </td>
         <td>
-            <a class="button" href="{{ url_for('main.holding_edit', name=name, holding_id = holding['id'],symbol=holding['symbol'])}}">Edit Holding</a>
+            <a class="button" href="{{ url_for('main.holding_edit', name=name, symbol=holding['symbol'], holding_id = holding['id'])}}">Edit Holding</a>
+            <a class="button" href="{{ url_for('main.holding_delete_ask', name=name, symbol=holding['symbol'], holding_id = holding['id'])}}">Delete Holding</a>
         </td>
     </tr>
     {% endfor %}
