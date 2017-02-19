@@ -3,7 +3,7 @@ from .. import db
 from ..models import Portfolio, Holding
 from . import main
 from .forms import TickerForm, PortfolioForm, PortfolioEditForm, HoldingForm, HoldingEditForm
-from .functions import last_price, update_last_price
+from .functions import last_price, update_mkt_val, update_all_market_vals, add_hold_to_port
 
 import datetime as dt
 
@@ -23,10 +23,7 @@ def index():
 @main.route('/portfolio_main', methods=['GET', 'POST'])
 def portfolio_main():
     if not session['last_update'] == str(dt.date.today()):
-        for port in Portfolio.query.all() or []:
-            for hold in Holding.query.filter_by(portfolio_id=port.id).all() or []:
-                update_last_price(hold.id)
-        session['last_update'] = str(dt.date.today())
+        update_all_market_vals()
     portfolio_data = Portfolio.query.order_by(Portfolio.name).all()
     return render_template('portfolio_main.html', portfolio_data=portfolio_data)
 
@@ -72,6 +69,7 @@ def portfolio_edit(name):
             if form.newcash.data or form.newcash.data == 0:
                 portfolio.cash = form.newcash.data
             db.session.add(portfolio)
+            update_mkt_val(portfolio.id)
             session['portfolio'] = portfolio.name
             flash('Portfolio data successfully updated!')
             return redirect(url_for('.portfolio_main'))
@@ -119,10 +117,7 @@ def holding_add(name):
                           purch_date=form.purch_date.data,
                           purch_price=round(form.purch_price.data, 2),
                           last_price=round(last_price(str(form.symbol.data).upper()), 2))
-        portfolio_name = session['portfolio']
-        holding.portfolio_id = Portfolio.query.filter_by(name=portfolio_name).first().id
-        db.session.add(holding)
-        db.session.commit()
+        add_hold_to_port(holding,session['portfolio'])
         flash('Holding successfully added!')
         return redirect(url_for('.holding_add', name=name))
     return render_template('holding_add.html', form=form, name=name)
@@ -142,6 +137,7 @@ def holding_edit(name, symbol, holding_id):
             holding.purch_date = form.new_purch_date.data
         db.session.add(holding)
         db.session.commit()
+        update_mkt_val(holding.portfolio_id)
         flash('Holding successfully edited!')
         return redirect(url_for('.portfolio', name=session['portfolio']))
     return render_template('holding_edit.html', form=form, symbol=symbol)
@@ -161,8 +157,10 @@ def holding_delete_ask(name, symbol, holding_id):
 @main.route('/holding/<holding_id>/delete')
 def holding_delete(holding_id):
     holding = Holding.query.filter_by(id=holding_id).first()
+    portfolio_id = holding.portfolio_id
     db.session.delete(holding)
     db.session.commit()
+    update_mkt_val(portfolio_id)
     flash(str(holding.symbol).upper() + ' successfully deleted!')
     return redirect(url_for('.portfolio', name=session['portfolio']))
 

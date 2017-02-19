@@ -7,11 +7,13 @@ class Portfolio(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(25), unique=True)
     cash = db.Column(db.Float)
+    market_value = db.Column(db.Float)
     holdings = db.relationship('Holding', backref='portfolio', lazy='dynamic')
 
     def __init__(self, name, cash):
         self.name = name
         self.cash = cash
+        self.market_value = cash
 
     def __repr__(self):
         return '<Name %r>' % self.name
