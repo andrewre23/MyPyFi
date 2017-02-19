@@ -16,7 +16,7 @@
 <div style="text-align:center">
     <p>Are you sure you want to delete {{ name }}?</p>
     <a class="button" href="{{ url_for('main.portfolio_delete') }}">Yes</a>
-    <a class="button" href="{{ url_for('main.portfolio_main') }}">No</a>
+    <a class="button" href="{{ url_for('main.portfolio',name=name) }}">No</a>
 </div>
 
 {% endblock %}
