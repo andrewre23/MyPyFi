@@ -18,6 +18,20 @@ class Portfolio(db.Model):
     def __repr__(self):
         return '<Name %r>' % self.name
 
+    def update_market_value(self):
+        self.update_last_prices()
+        self.market_value = 0
+        self.market_value += self.cash
+        for holding in self.holdings:
+            self.market_value += (holding.shares * holding.last_price)
+        db.session.add(self)
+
+
+    def update_last_prices(self):
+        for holding in self.holdings:
+            holding.update_last_price()
+
+
 
 class Holding(db.Model):
     # model for holdings associated with portfolios
@@ -30,16 +44,22 @@ class Holding(db.Model):
     last_price = db.Column(db.Float)
     portfolio_id = db.Column(db.Integer, db.ForeignKey('portfolios.id'))
 
-    def __init__(self, symbol, shares, purch_date, purch_price,last_price):
+    def __init__(self, symbol, shares, purch_date, purch_price, portfolio_id):
         self.symbol = symbol
         self.shares = shares
         self.purch_date = purch_date
         self.purch_price = purch_price
-        self.last_price = last_price
+        self.portfolio_id = portfolio_id
+        self.update_last_price()
+        db.session.add(self)
 
     def __repr__(self):
         return '<Name %r>' % self.symbol
 
+    def update_last_price(self):
+        from pandas_datareader import data as web
+        self.last_price = round(web.DataReader(self.symbol,'yahoo')['Adj Close'].iloc[-1],2)
+        db.session.add(self)
 
 class Ticker_Dataset(db.Model):
     # model definition for HDF5 ticker data storage
