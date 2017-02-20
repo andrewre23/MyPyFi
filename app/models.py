@@ -28,7 +28,6 @@ class Portfolio(db.Model):
         for holding in self.holdings:
             holding.update()
 
-
     def update_market_value(self):
         self.market_value = 0
         self.invested = 0
@@ -39,15 +38,16 @@ class Portfolio(db.Model):
         db.session.add(self)
 
     def update_profit(self):
-        self.total_profit = self.market_value - self.invested
+        self.total_profit = self.market_value - self.invested - self.cash
         if self.invested:
-            self.profit_percent = round(self.total_profit / self.invested,4)
+            self.profit_percent = round(self.total_profit / self.invested, 4)
         else:
             self.profit_percent = 0
         db.session.add(self)
 
     def update_holding_count(self):
         self.num_holdings = Holding.query.filter_by(portfolio_id=self.id).count()
+        db.session.add(self)
 
     def update(self):
         for holding in self.holdings:
@@ -93,8 +93,8 @@ class Holding(db.Model):
         db.session.add(self)
 
     def update_profit(self):
-        self.total_profit = round(self.shares * (self.last_price - self.purch_price),2)
-        self.profit_percent = round(self.last_price/self.purch_price - 1,4)
+        self.total_profit = round(self.shares * (self.last_price - self.purch_price), 2)
+        self.profit_percent = round(self.last_price / self.purch_price - 1, 4)
         db.session.add(self)
 
     def update(self):
