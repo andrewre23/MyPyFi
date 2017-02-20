@@ -42,7 +42,10 @@
             <center>Number of Holdings</center>
         </th>
         <th>
-            <center>Oldest Holding</center>
+            <center>Total Profit</center>
+        </th>
+        <th>
+            <center>( % )</center>
         </th>
     </tr>
     {% for portfolio in portfolio_data %}
@@ -57,10 +60,13 @@
             <center>{{ "${:,.2f}".format(portfolio["cash"]) }}</center>
         </td>
         <td>
-            <center></center>
+            <center> </center>
         </td>
         <td>
-            <center></center>
+            <center> </center>
+        </td>
+        <td>
+            <center> </center>
         </td>
         <td><a class="button" href="{{ url_for('main.portfolio', name=portfolio['name']) }}">View Portfolio</a></td>
     </tr>
