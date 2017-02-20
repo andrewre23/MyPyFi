@@ -55,7 +55,7 @@ def portfolio(name):
         abort(404)
     else:
         session['portfolio'] = str(portfolio.name)
-    holding_data = portfolio.holdings.order_by(Holding.symbol).all()
+    holding_data = portfolio.holdings.order_by(Holding.portfolio_percent).all()
     return render_template('portfolio.html', name=name, holding_data=holding_data)
 
 
