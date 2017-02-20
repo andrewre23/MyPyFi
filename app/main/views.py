@@ -26,6 +26,7 @@ def portfolio_main():
         for port in portfolio_data: port.update_market_value()
         session['last_update'] = str(dt.date.today())
     portfolio_data = Portfolio.query.order_by(Portfolio.name).all()
+
     return render_template('portfolio_main.html', portfolio_data=portfolio_data)
 
 
@@ -143,6 +144,7 @@ def holding_edit(name, symbol, holding_id):
         return redirect(url_for('.portfolio', name=session['portfolio']))
     return render_template('holding_edit.html', form=form, symbol=symbol)
 
+
 # route for confirming deletion of holdings
 @main.route('/portfolio/<name>/<symbol>/delete/<holding_id>')
 def holding_delete_ask(name, symbol, holding_id):
@@ -151,6 +153,7 @@ def holding_delete_ask(name, symbol, holding_id):
         abort(404)
     return render_template('holding_delete.html', name=session['portfolio'], symbol=holding.symbol,
                            holding_id=holding.id)
+
 
 # route for deleting holdings
 @main.route('/holding/<holding_id>/delete')
@@ -162,6 +165,7 @@ def holding_delete(holding_id):
     Portfolio.query.filter_by(id=portfolio_id).first().update_market_value()
     flash(str(holding.symbol).upper() + ' successfully deleted!')
     return redirect(url_for('.portfolio', name=session['portfolio']))
+
 
 # #######################
 # # ticker routes
