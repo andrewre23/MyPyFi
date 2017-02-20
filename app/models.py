@@ -26,11 +26,9 @@ class Portfolio(db.Model):
             self.market_value += (holding.shares * holding.last_price)
         db.session.add(self)
 
-
     def update_last_prices(self):
         for holding in self.holdings:
             holding.update_last_price()
-
 
 
 class Holding(db.Model):
@@ -58,8 +56,9 @@ class Holding(db.Model):
 
     def update_last_price(self):
         from pandas_datareader import data as web
-        self.last_price = round(web.DataReader(self.symbol,'yahoo')['Adj Close'].iloc[-1],2)
+        self.last_price = round(web.DataReader(self.symbol, 'yahoo')['Adj Close'].iloc[-1], 2)
         db.session.add(self)
+
 
 class Ticker_Dataset(db.Model):
     # model definition for HDF5 ticker data storage
