@@ -38,6 +38,12 @@
             <center>Market Value</center>
         </th>
         <th>
+            <center>Total Profit</center>
+        </th>
+        <th>
+            <center>( % )</center>
+        </th>
+        <th>
             <center>Last Price</center>
         </th>
         <th>
@@ -57,6 +63,12 @@
         </td>
         <td>
             <center>{{ "${:,.2f}".format(holding["last_price"]*holding["shares"]) }}</center>
+        </td>
+        <td>
+            <center>{{ "${:,.2f}".format(holding["total_profit"]) }}</center>
+        </td>
+        <td>
+            <center>{{ "{0:.2f}%".format(holding["profit_percent"]*100) }}</center>
         </td>
         <td>
             <center>{{ "${:,.2f}".format(holding["last_price"]) }}</center>

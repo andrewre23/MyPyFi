@@ -23,7 +23,7 @@ def index():
 def portfolio_main():
     if not session.get('last_update', None) == str(dt.date.today()):
         portfolio_data = Portfolio.query.order_by(Portfolio.name).all()
-        for port in portfolio_data: port.update_market_value()
+        for port in portfolio_data: port.update()
         session['last_update'] = str(dt.date.today())
     portfolio_data = Portfolio.query.order_by(Portfolio.name).all()
 
@@ -71,7 +71,7 @@ def portfolio_edit(name):
             if form.newcash.data or form.newcash.data == 0:
                 portfolio.cash = form.newcash.data
             db.session.add(portfolio)
-            portfolio.update_market_value()
+            portfolio.update()
             session['portfolio'] = portfolio.name
             flash('Portfolio data successfully updated!')
             return redirect(url_for('.portfolio_main'))
@@ -120,7 +120,7 @@ def holding_add(name):
                 purch_price=round(form.purch_price.data, 2),
                 portfolio_id=Portfolio.query.filter_by(name=session['portfolio']).first().id)
         flash('Holding successfully added!')
-        Portfolio.query.filter_by(name=session['portfolio']).first().update_market_value()
+        Portfolio.query.filter_by(name=session['portfolio']).first().update()
         return redirect(url_for('.holding_add', name=name))
     return render_template('holding_add.html', form=form, name=name)
 
@@ -139,7 +139,7 @@ def holding_edit(name, symbol, holding_id):
             holding.purch_date = form.new_purch_date.data
         db.session.add(holding)
         db.session.commit()
-        Portfolio.query.filter_by(id=holding.portfolio_id).first().update_market_value()
+        Portfolio.query.filter_by(id=holding.portfolio_id).first().update()
         flash('Holding successfully edited!')
         return redirect(url_for('.portfolio', name=session['portfolio']))
     return render_template('holding_edit.html', form=form, symbol=symbol)
@@ -162,7 +162,7 @@ def holding_delete(holding_id):
     portfolio_id = holding.portfolio_id
     db.session.delete(holding)
     db.session.commit()
-    Portfolio.query.filter_by(id=portfolio_id).first().update_market_value()
+    Portfolio.query.filter_by(id=portfolio_id).first().update()
     flash(str(holding.symbol).upper() + ' successfully deleted!')
     return redirect(url_for('.portfolio', name=session['portfolio']))
 
