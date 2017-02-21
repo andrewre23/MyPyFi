@@ -167,6 +167,16 @@ def holding_delete(holding_id):
     return redirect(url_for('.portfolio', name=session['portfolio']))
 
 
+#######################
+# analytical routes
+#######################
+
+# route for portfolio optimization path
+
+
+
+
+
 # #######################
 # # ticker routes
 # #######################
