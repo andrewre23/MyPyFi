@@ -25,7 +25,7 @@ def portfolio_main():
         portfolio_data = Portfolio.query.order_by(Portfolio.name).all()
         for port in portfolio_data: port.update()
         session['last_update'] = str(dt.date.today())
-    portfolio_data = Portfolio.query.order_by(Portfolio.name).all()
+    portfolio_data = Portfolio.query.order_by(Portfolio.market_value.desc()).all()
     return render_template('portfolio_main.html', portfolio_data=portfolio_data)
 
 
@@ -73,7 +73,7 @@ def portfolio_edit(name):
             portfolio.update()
             session['portfolio'] = portfolio.name
             flash('Portfolio data successfully updated!')
-            return redirect(url_for('.portfolio_main'))
+            return redirect(url_for('.portfolio', name=name))
         else:
             flash('Error updating portfolio data')
     return render_template('portfolio_edit.html', name=name, form=form)
