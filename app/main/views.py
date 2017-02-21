@@ -26,7 +26,6 @@ def portfolio_main():
         for port in portfolio_data: port.update()
         session['last_update'] = str(dt.date.today())
     portfolio_data = Portfolio.query.order_by(Portfolio.name).all()
-
     return render_template('portfolio_main.html', portfolio_data=portfolio_data)
 
 
