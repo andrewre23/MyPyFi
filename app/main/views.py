@@ -99,7 +99,6 @@ def portfolio_delete():
     db.session.delete(portfolio)
     for holding in holdinglist:
         db.session.delete(holding)
-    db.session.commit()
     flash(session['portfolio'] + ' successfully deleted!')
     session['portfolio'] = None
     return redirect(url_for('.portfolio_main'))
@@ -138,7 +137,6 @@ def holding_edit(name, symbol, holding_id):
         if form.new_purch_date.data:
             holding.purch_date = form.new_purch_date.data
         db.session.add(holding)
-        db.session.commit()
         Portfolio.query.filter_by(id=holding.portfolio_id).first().update()
         flash('Holding successfully edited!')
         return redirect(url_for('.portfolio', name=session['portfolio']))
@@ -161,7 +159,6 @@ def holding_delete(holding_id):
     holding = Holding.query.filter_by(id=holding_id).first()
     portfolio_id = holding.portfolio_id
     db.session.delete(holding)
-    db.session.commit()
     Portfolio.query.filter_by(id=portfolio_id).first().update()
     flash(str(holding.symbol).upper() + ' successfully deleted!')
     return redirect(url_for('.portfolio', name=session['portfolio']))
