@@ -30,7 +30,7 @@ class HoldingForm(Form):
     purch_price = FloatField('Enter purchase price:',
                              validators=[NumberRange(min=0, max=None, message='Cannot enter negative prices'),
                                          DataRequired()])
-    purch_date = DateField('Enter date purchased', default=dt.date.today())
+    purch_date = DateField('Enter date purchased: (YYYY-DD-MM format)', default=dt.date.today())
     submit = SubmitField('Add Holding')
 
     # ensure symbol entered is one that yahoo finance has data for
@@ -48,7 +48,7 @@ class HoldingEditForm(Form):
     new_purch_price = FloatField('Enter new purchase price:',
                              validators=[NumberRange(min=0, max=None, message='Cannot enter negative prices'),
                                          Optional()])
-    new_purch_date = DateField('Enter new date purchased',validators=[Optional()])
+    new_purch_date = DateField('Enter new date purchased: (YYYY-DD-MM format)',validators=[Optional()])
     submit = SubmitField('Edit Holding')
 
     # ensure symbol entered is one that yahoo finance has data for
