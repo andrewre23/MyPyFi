@@ -73,6 +73,7 @@ class Holding(db.Model):
     total_profit = db.Column(db.Float)
     profit_percent = db.Column(db.Float)
     portfolio_percent = db.Column(db.Float)
+    last_updated = db.Column(db.String)
     portfolio_id = db.Column(db.Integer, db.ForeignKey('portfolios.id'))
 
     def __init__(self, symbol, shares, purch_date, purch_price, portfolio_id):
@@ -88,8 +89,11 @@ class Holding(db.Model):
         return '<Name %r>' % self.symbol
 
     def update_last_price(self):
-        from pandas_datareader import data as web
-        self.last_price = round(web.DataReader(self.symbol, 'yahoo')['Adj Close'].iloc[-1], 2)
+        import datetime as dt
+        if not self.last_updated == str(dt.date.today()):
+            from pandas_datareader import data as web
+            self.last_price = round(web.DataReader(self.symbol, 'yahoo')['Adj Close'].iloc[-1], 2)
+            self.last_updated = str(dt.date.today())
         db.session.add(self)
 
     def update_market_value(self):
