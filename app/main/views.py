@@ -133,7 +133,6 @@ def portfolio_delete():
 
 
 
-
 #######################
 # holding routes
 #######################
