@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}MyPyFi{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>
+        <center>{{ name }}</center>
+    </h1>
+    <p>
+    <center>Here's where manage and edit your portfolio</center>
+    </p>
+</div>
+
+<div style="text-align:center">
+    <a class="button" href="{{ url_for('main.portfolio_edit', name=name) }}">Edit Portfolio Data</a>
+    <p></p>
+    <a class="button" href="{{ url_for('main.holding_add', name=name) }}">Add Holding</a>
+</div>
+
+{% if not holding_data|count > 0 %}
+<h1>
+    <center>No Holdings Found!</center>
+</h1>
+<p>
+<center>There are no holdings saved in the portfolio {{ name }}</center></p>
+{% else %}
+<h1>
+    <center>Holdings</center>
+</h1>
+<table style="width:100%">
+    <tr>
+        <th>
+            <center>Symbol</center>
+        </th>
+        <th>
+            <center>Market Value</center>
+        </th>
+        <th>
+            <center>Total Profit</center>
+        </th>
+        <th>
+            <center>Profit %</center>
+        </th>
+        <th>
+            <center>Portfolio % </center>
+        </th>
+        <th>
+            <center>Last Price</center>
+        </th>
+        <th>
+            <center>Shares</center>
+        </th>
+        <th>
+            <center>Purchase Price</center>
+        </th>
+        <th>
+            <center>Purchase Date</center>
+        </th>
+    </tr>
+    {% for holding in holding_data %}
+    <tr>
+        <td>
+            <center>{{ holding["symbol"] | upper }}</center>
+        </td>
+        <td>
+            <center>{{ "${:,.2f}".format(holding["last_price"]*holding["shares"]) }}</center>
+        </td>
+        <td>
+            <center>{{ "${:,.2f}".format(holding["total_profit"]) }}</center>
+        </td>
+        <td>
+            <center>{{ "{0:.2f}%".format(holding["profit_percent"]*100) }}</center>
+        </td>
+         <td>
+            <center>{{ "{0:.2f}%".format(holding["portfolio_percent"]*100) }}</center>
+        </td>
+        <td>
+            <center>{{ "${:,.2f}".format(holding["last_price"]) }}</center>
+        </td>
+        <td>
+            <center>{{ holding["shares"] }}</center>
+        </td>
+        <td>
+            <center>{{ "${:,.2f}".format(holding["purch_price"]) }}</center>
+        </td>
+        <td>
+            <center>{{ "{:%m-%d-%Y}".format(holding["purch_date"]) }}</center>
+        </td>
+        <td>
+            <a class="button" href="{{ url_for('main.holding_edit', name=name, symbol=holding['symbol'], holding_id = holding['id'])}}">Edit</a>
+            <a class="button" href="{{ url_for('main.holding_delete_ask', name=name, symbol=holding['symbol'], holding_id = holding['id'])}}">Delete</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endif %}
+<div style="text-align:center">
+    <a class="button" href="{{ url_for('main.portfolio_delete_ask', name=name) }}">Delete Portfolio</a>
+</div>
+{% endblock %}
