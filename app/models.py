@@ -1,5 +1,5 @@
 from . import db
-
+import datetime as dt
 
 class Portfolio(db.Model):
     # model for base portfolio object
@@ -63,6 +63,14 @@ class Portfolio(db.Model):
         self.update_holding_count()
         for holding in self.holdings:
             holding.update_portfolio_percentage()
+
+    def create_optimal_portfolio(self):
+        opt_port = Portfolio(name=self.name+'_opt',cash=self.cash)
+        for holding in self.holdings:
+            Holding(holding.symbol,holding.shares,holding.purch_date,holding.purch_price,opt_port.id)
+        opt_port.update()
+        db.session.add(opt_port)
+
 
 
 class Holding(db.Model):

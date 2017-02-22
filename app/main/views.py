@@ -3,7 +3,7 @@ from .. import db
 from ..models import Portfolio, Holding
 from . import main
 from .forms import TickerForm, PortfolioForm, PortfolioEditForm, HoldingForm, HoldingEditForm, OptimizationTimeSpanForm
-from .functions import optimal_portfolio
+from .functions import gen_optimal_portfolio
 
 import datetime as dt
 
@@ -57,7 +57,7 @@ def portfolio(name):
     else:
         session['portfolio'] = str(portfolio.name)
     holding_data = portfolio.holdings.order_by(Holding.portfolio_percent.desc()).all()
-    optimal_portfolio(portfolio,dt.date(2015,1,1))
+    # gen_optimal_portfolio(portfolio,dt.date(2016,1,1))
     return render_template('portfolio.html', name=name, holding_data=holding_data)
 
 
@@ -116,7 +116,7 @@ def portfolio_delete():
 #
 #
 #
-#         redirect(url_for('.portfolio_optimized',name=name))
+#         redirect(url_for('.portfolio_optimized',name=name+'_opt',holding))
 #     return render_template('portfolio_optimal_ask.html', name=name)
 #
 #
