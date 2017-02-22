@@ -30,7 +30,7 @@ class HoldingForm(Form):
     purch_price = FloatField('Enter purchase price:',
                              validators=[NumberRange(min=0, max=None, message='Cannot enter negative prices'),
                                          DataRequired()])
-    purch_date = DateField('Enter date purchased', default=dt.date.today())
+    purch_date = DateField('Enter date purchased: (YYYY-DD-MM)', default=dt.date.today())
     submit = SubmitField('Add Holding')
 
     # ensure symbol entered is one that yahoo finance has data for
@@ -57,6 +57,17 @@ class HoldingEditForm(Form):
             test = web.DataReader(str(field.data).capitalize(), 'yahoo')
         except:
             raise ValidationError('No symbol under that name found')
+
+
+class OptimizationTimeSpanForm(Form):
+    # form to enter time-span of returns used for portfolio optimization
+    start_date = DateField('Enter start date for historical returns for optimization: (YYYY-DD-MM)',
+                           validators=[DataRequired()])
+    risk_free = FloatField('Enter risk-free interest rate: (rec: 0.01)',default=0.01,
+                           validators=[NumberRange(min=0,max=None,message='No negative interest rates')])
+    submit = SubmitField('View Optimal Portfolio')
+
+
 
 
 # define TickerForm class for adding new HDF5 ticker data

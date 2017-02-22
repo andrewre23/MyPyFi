@@ -2,7 +2,8 @@ from flask import render_template, session, redirect, url_for, flash, abort
 from .. import db
 from ..models import Portfolio, Holding
 from . import main
-from .forms import TickerForm, PortfolioForm, PortfolioEditForm, HoldingForm, HoldingEditForm
+from .forms import TickerForm, PortfolioForm, PortfolioEditForm, HoldingForm, HoldingEditForm, OptimizationTimeSpanForm
+from .functions import optimal_portfolio
 
 import datetime as dt
 
@@ -55,6 +56,8 @@ def portfolio(name):
     else:
         session['portfolio'] = str(portfolio.name)
     holding_data = portfolio.holdings.order_by(Holding.portfolio_percent.desc()).all()
+    import datetime as dt
+    optimal_portfolio(portfolio,dt.date(2015,1,1))
     return render_template('portfolio.html', name=name, holding_data=holding_data)
 
 
@@ -101,6 +104,34 @@ def portfolio_delete():
     flash(session['portfolio'] + ' successfully deleted!')
     session['portfolio'] = None
     return redirect(url_for('.portfolio_main'))
+
+# # route for portfolio-specific pages
+# @main.route('/portfolio/<name>/optimized/ask')
+# def portfolio_optimize_ask(name):
+#     form = OptimizationTimeSpanForm()
+#     if form.validate_on_submit():
+#         start_date = form.start_date.data
+#         risk_free = round(form.risk_free.data,4)
+#
+#
+#
+#
+#         redirect(url_for('.portfolio_optimized',name=name))
+#     return render_template('portfolio_optimal_ask.html', name=name)
+#
+#
+# # route for portfolio-specific pages
+# @main.route('/portfolio/<name>/optimized')
+# def portfolio_optimized(name):
+#     portfolio = Portfolio.query.filter_by(name=name).first()
+#     if portfolio is None:
+#         abort(404)
+#     else:
+#         session['portfolio'] = str(portfolio.name)
+#     holding_data = portfolio.holdings.order_by(Holding.portfolio_percent.desc()).all()
+#     return render_template('portfolio.html', name=name, holding_data=holding_data)
+
+
 
 
 #######################
