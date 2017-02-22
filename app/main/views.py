@@ -57,7 +57,6 @@ def portfolio(name):
     else:
         session['portfolio'] = str(portfolio.name)
     holding_data = portfolio.holdings.order_by(Holding.portfolio_percent.desc()).all()
-    import datetime as dt
     optimal_portfolio(portfolio,dt.date(2015,1,1))
     return render_template('portfolio.html', name=name, holding_data=holding_data)
 
