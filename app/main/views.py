@@ -105,16 +105,17 @@ def portfolio_delete():
     session['portfolio'] = None
     return redirect(url_for('.portfolio_main'))
 
+
 # route for asking optimization inputs
 @main.route('/portfolio/<name>/optimal/ask', methods=['GET', 'POST'])
 def portfolio_optimal_ask(name):
     form = OptimizationTimeSpanForm()
     if form.validate_on_submit():
         start_date = form.start_date.data
-        risk_free = round(form.risk_free.data,4)
-        portfolio = Portfolio.query.filter_by(name = name).first()
-        gen_optimal_portfolio(portfolio,start_date, risk_free)
-        return redirect(url_for('.portfolio_optimized',name=name+'_opt'))
+        risk_free = round(form.risk_free.data, 4)
+        portfolio = Portfolio.query.filter_by(name=name).first()
+        gen_optimal_portfolio(portfolio, start_date, risk_free)
+        return redirect(url_for('.portfolio_optimized', name=name + '_opt'))
     return render_template('portfolio_optimal_ask.html', name=name, form=form)
 
 
@@ -145,7 +146,6 @@ def portfolio_optimized_revert(name):
 def portfolio_optimized_rebalance(name):
     opt_name = name
     act_name = name[:-4]
-
     act_port = Portfolio.query.filter_by(name=act_name).first()
     for holding in act_port.holdings:
         db.session.delete(holding)
@@ -156,9 +156,6 @@ def portfolio_optimized_rebalance(name):
     flash(name[:-4] + ' was rebalanced!')
     session['portfolio'] = None
     return redirect(url_for('.portfolio_main'))
-
-
-
 
 
 #######################

@@ -14,11 +14,12 @@
 </div>
 
 <div style="text-align:center">
-    <a class="button" href="{{ url_for('main.portfolio_optimized_rebalance',name=name) }}">Rebalance Current Holdings</a>
+    <a class="button" href="{{ url_for('main.portfolio_optimized_rebalance',name=name) }}">Rebalance Current
+        Holdings</a>
     <p></p>
     <a class="button" href="{{ url_for('main.portfolio_optimized_revert',name=name) }}">Keep Current Portfolio</a>
     <p></p>
-    <img src= "{{ url_for('static',filename='optimized_portfolio.png') }}">
+    <img src="{{ url_for('static',filename='optimized_portfolio.png') }}">
 </div>
 
 {% if not holding_data|count > 0 %}
@@ -40,7 +41,7 @@
             <center>Market Value</center>
         </th>
         <th>
-            <center>Portfolio % </center>
+            <center>Portfolio %</center>
         </th>
         <th>
             <center>Last Price</center>
@@ -57,7 +58,7 @@
         <td>
             <center>{{ "${:,.2f}".format(holding["last_price"]*holding["shares"]) }}</center>
         </td>
-         <td>
+        <td>
             <center>{{ "{0:.2f}%".format(holding["portfolio_percent"]*100) }}</center>
         </td>
         <td>

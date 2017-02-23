@@ -44,7 +44,7 @@
             <center>Profit %</center>
         </th>
         <th>
-            <center>Portfolio % </center>
+            <center>Portfolio %</center>
         </th>
         <th>
             <center>Last Price</center>
@@ -73,7 +73,7 @@
         <td>
             <center>{{ "{0:.2f}%".format(holding["profit_percent"]*100) }}</center>
         </td>
-         <td>
+        <td>
             <center>{{ "{0:.2f}%".format(holding["portfolio_percent"]*100) }}</center>
         </td>
         <td>
@@ -89,8 +89,10 @@
             <center>{{ "{:%m-%d-%Y}".format(holding["purch_date"]) }}</center>
         </td>
         <td>
-            <a class="button" href="{{ url_for('main.holding_edit', name=name, symbol=holding['symbol'], holding_id = holding['id'])}}">Edit</a>
-            <a class="button" href="{{ url_for('main.holding_delete_ask', name=name, symbol=holding['symbol'], holding_id = holding['id'])}}">Delete</a>
+            <a class="button"
+               href="{{ url_for('main.holding_edit', name=name, symbol=holding['symbol'], holding_id = holding['id'])}}">Edit</a>
+            <a class="button"
+               href="{{ url_for('main.holding_delete_ask', name=name, symbol=holding['symbol'], holding_id = holding['id'])}}">Delete</a>
         </td>
     </tr>
     {% endfor %}

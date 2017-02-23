@@ -13,11 +13,13 @@ class PortfolioForm(Form):
                                   DataRequired()])
     submit = SubmitField('Add Portfolio')
 
+
 # define PortfolioForm to add new portfolios
 class PortfolioEditForm(Form):
-    newname = StringField('Enter new portfolio name:',validators=[Optional()])
+    newname = StringField('Enter new portfolio name:', validators=[Optional()])
     newcash = FloatField('Enter new cash position (USD $):',
-                      validators=[NumberRange(min=0, max=None, message='Cannot have negative cash holdings'),Optional()])
+                         validators=[NumberRange(min=0, max=None, message='Cannot have negative cash holdings'),
+                                     Optional()])
     submit = SubmitField('Update Data')
 
 
@@ -40,15 +42,16 @@ class HoldingForm(Form):
         except:
             raise ValidationError('No symbol under that name found')
 
+
 # define HoldingForm to add new portfolios
 class HoldingEditForm(Form):
     new_shares = IntegerField('Enter new number of shares to be held:', validators=[NumberRange(min=0, max=None,
-                                                                                        message='Not a valid position'),
-                                                                            Optional()])
+                                                                                                message='Not a valid position'),
+                                                                                    Optional()])
     new_purch_price = FloatField('Enter new purchase price:',
-                             validators=[NumberRange(min=0, max=None, message='Cannot enter negative prices'),
-                                         Optional()])
-    new_purch_date = DateField('Enter new date purchased',validators=[Optional()])
+                                 validators=[NumberRange(min=0, max=None, message='Cannot enter negative prices'),
+                                             Optional()])
+    new_purch_date = DateField('Enter new date purchased', validators=[Optional()])
     submit = SubmitField('Edit Holding')
 
     # ensure symbol entered is one that yahoo finance has data for
@@ -63,11 +66,9 @@ class OptimizationTimeSpanForm(Form):
     # form to enter time-span of returns used for portfolio optimization
     start_date = DateField('Enter start date for historical returns for optimization: (YYYY-DD-MM)',
                            validators=[DataRequired()])
-    risk_free = FloatField('Enter risk-free interest rate:',default=0.01,
-                           validators=[NumberRange(min=0,max=None,message='No negative interest rates')])
+    risk_free = FloatField('Enter risk-free interest rate:', default=0.01,
+                           validators=[NumberRange(min=0, max=None, message='No negative interest rates')])
     submit = SubmitField('View Optimal Portfolio')
-
-
 
 
 # define TickerForm class for adding new HDF5 ticker data
