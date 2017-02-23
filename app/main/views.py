@@ -125,6 +125,7 @@ def portfolio_optimized(name):
     portfolio = Portfolio.query.filter_by(name=name).first()
     if portfolio is None:
         abort(404)
+    portfolio.update()
     holding_data = portfolio.holdings.order_by(Holding.portfolio_percent.desc()).all()
     return render_template('portfolio_optimized.html', name=name, holding_data=holding_data)
 
