@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}MyPyFi{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>
+        <center>Optimal Portfolio Based on {{ name[:-4] }}</center>
+    </h1>
+    <p>
+    <center>Here's your optimized portfolio</center>
+    </p>
+</div>
+
+<div style="text-align:center">
+    <a class="button" href="{{ url_for('main.portfolio_optimized_rebalance',name=name) }}">Rebalance Current Holdings</a>
+    <p></p>
+    <a class="button" href="{{ url_for('main.portfolio_optimized_revert',name=name) }}">Keep Current Portfolio</a>
+    <p></p>
+    <img src= "{{ url_for('static',filename='optimized_portfolio.png') }}">
+</div>
+
+{% if not holding_data|count > 0 %}
+<h1>
+    <center>No Holdings Found!</center>
+</h1>
+<p>
+<center>There are no holdings saved in the portfolio {{ name }}</center></p>
+{% else %}
+<h1>
+    <center>Holdings</center>
+</h1>
+<table style="width:100%">
+    <tr>
+        <th>
+            <center>Symbol</center>
+        </th>
+        <th>
+            <center>Market Value</center>
+        </th>
+        <th>
+            <center>Portfolio % </center>
+        </th>
+        <th>
+            <center>Last Price</center>
+        </th>
+        <th>
+            <center>Shares</center>
+        </th>
+    </tr>
+    {% for holding in holding_data %}
+    <tr>
+        <td>
+            <center>{{ holding["symbol"] | upper }}</center>
+        </td>
+        <td>
+            <center>{{ "${:,.2f}".format(holding["last_price"]*holding["shares"]) }}</center>
+        </td>
+         <td>
+            <center>{{ "{0:.2f}%".format(holding["portfolio_percent"]*100) }}</center>
+        </td>
+        <td>
+            <center>{{ "${:,.2f}".format(holding["last_price"]) }}</center>
+        </td>
+        <td>
+            <center>{{ holding["shares"] }}</center>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endif %}
+
+{% endblock %}

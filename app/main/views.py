@@ -49,7 +49,7 @@ def portfolio_add():
 
 
 # route for portfolio-specific pages
-@main.route('/portfolio/<name>')
+@main.route('/portfolio/<name>', methods=['GET', 'POST'])
 def portfolio(name):
     portfolio = Portfolio.query.filter_by(name=name).first()
     if portfolio is None:
@@ -57,7 +57,7 @@ def portfolio(name):
     else:
         session['portfolio'] = str(portfolio.name)
     holding_data = portfolio.holdings.order_by(Holding.portfolio_percent.desc()).all()
-    # gen_optimal_portfolio(portfolio,dt.date(2016,1,1))
+
     return render_template('portfolio.html', name=name, holding_data=holding_data)
 
 
@@ -83,7 +83,7 @@ def portfolio_edit(name):
 
 
 # route for confirming deletion of portfolios
-@main.route('/portfolio/<name>/delete')
+@main.route('/portfolio/<name>/delete', methods=['GET', 'POST'])
 def portfolio_delete_ask(name):
     portfolio = Portfolio.query.filter_by(name=name).first()
     if portfolio is None:
@@ -94,7 +94,7 @@ def portfolio_delete_ask(name):
 
 
 # route for deleting portfolios
-@main.route('/portfolio/delete')
+@main.route('/portfolio/delete', methods=['GET', 'POST'])
 def portfolio_delete():
     portfolio = Portfolio.query.filter_by(name=session['portfolio']).first()
     holdinglist = Holding.query.filter_by(portfolio_id=portfolio.id).all()
@@ -105,31 +105,59 @@ def portfolio_delete():
     session['portfolio'] = None
     return redirect(url_for('.portfolio_main'))
 
-# # route for portfolio-specific pages
-# @main.route('/portfolio/<name>/optimized/ask')
-# def portfolio_optimize_ask(name):
-#     form = OptimizationTimeSpanForm()
-#     if form.validate_on_submit():
-#         start_date = form.start_date.data
-#         risk_free = round(form.risk_free.data,4)
-#
-#
-#
-#
-#         redirect(url_for('.portfolio_optimized',name=name+'_opt',holding))
-#     return render_template('portfolio_optimal_ask.html', name=name)
-#
-#
-# # route for portfolio-specific pages
-# @main.route('/portfolio/<name>/optimized')
-# def portfolio_optimized(name):
-#     portfolio = Portfolio.query.filter_by(name=name).first()
-#     if portfolio is None:
-#         abort(404)
-#     else:
-#         session['portfolio'] = str(portfolio.name)
-#     holding_data = portfolio.holdings.order_by(Holding.portfolio_percent.desc()).all()
-#     return render_template('portfolio.html', name=name, holding_data=holding_data)
+# route for asking optimization inputs
+@main.route('/portfolio/<name>/optimal/ask', methods=['GET', 'POST'])
+def portfolio_optimal_ask(name):
+    form = OptimizationTimeSpanForm()
+    if form.validate_on_submit():
+        start_date = form.start_date.data
+        risk_free = round(form.risk_free.data,4)
+        portfolio = Portfolio.query.filter_by(name = name).first()
+        gen_optimal_portfolio(portfolio,start_date, risk_free)
+        return redirect(url_for('.portfolio_optimized',name=name+'_opt'))
+    return render_template('portfolio_optimal_ask.html', name=name, form=form)
+
+
+# route for viewing optimized portfolio and rebalancing or keeping changes
+@main.route('/portfolio/<name>/optimized', methods=['GET', 'POST'])
+def portfolio_optimized(name):
+    portfolio = Portfolio.query.filter_by(name=name).first()
+    if portfolio is None:
+        abort(404)
+    holding_data = portfolio.holdings.order_by(Holding.portfolio_percent.desc()).all()
+    return render_template('portfolio_optimized.html', name=name, holding_data=holding_data)
+
+
+# route for keeping current portfolio
+@main.route('/portfolio/<name>/optimized/changes', methods=['GET', 'POST'])
+def portfolio_optimized_revert(name):
+    opt_name = name
+    opt_port = Portfolio.query.filter_by(name=opt_name).first()
+    for holding in opt_port.holdings:
+        db.session.delete(holding)
+    db.session.delete(opt_port)
+    session['portfolio'] = None
+    return redirect(url_for('.portfolio_main'))
+
+
+# route for keeping current portfolio
+@main.route('/portfolio/<name>/optimized/rebalance', methods=['GET', 'POST'])
+def portfolio_optimized_rebalance(name):
+    opt_name = name
+    act_name = name[:-4]
+
+    act_port = Portfolio.query.filter_by(name=act_name).first()
+    for holding in act_port.holdings:
+        db.session.delete(holding)
+    db.session.delete(act_port)
+    opt_port = Portfolio.query.filter_by(name=opt_name).first()
+    opt_port.name = act_name
+    db.session.add(opt_port)
+    flash(name[:-4] + ' was rebalanced!')
+    session['portfolio'] = None
+    return redirect(url_for('.portfolio_main'))
+
+
 
 
 

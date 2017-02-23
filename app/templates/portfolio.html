@@ -98,6 +98,7 @@
 
 {% endif %}
 <div style="text-align:center">
+    <a class="button" href="{{ url_for('main.portfolio_optimal_ask', name=name) }}">Optimize Portfolio</a>
     <a class="button" href="{{ url_for('main.portfolio_delete_ask', name=name) }}">Delete Portfolio</a>
 </div>
 {% endblock %}

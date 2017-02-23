@@ -63,6 +63,9 @@ class Portfolio(db.Model):
         self.update_holding_count()
         for holding in self.holdings:
             holding.update_portfolio_percentage()
+            if holding.shares == 0:
+                db.session.delete(holding)
+
 
     def create_optimal_portfolio(self):
         # old_port = Portfolio.query.filter_by(name=self.name+'_opt').first()
