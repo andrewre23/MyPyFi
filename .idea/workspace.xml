@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="52158b68-ce66-4250-ab46-47009d40d7bd" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data-dev.sqlite" afterPath="$PROJECT_DIR$/data-dev.sqlite" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/main/functions.py" afterPath="$PROJECT_DIR$/app/main/functions.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models.py" afterPath="$PROJECT_DIR$/app/models.py" />
     </list>
     <ignored path="MyPyFi.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -480,13 +477,6 @@
       <option name="presentableId" value="Default" />
       <updated>1475208834294</updated>
     </task>
-    <task id="LOCAL-00048" summary="added views for deleting portfolios">
-      <created>1487394572877</created>
-      <option name="number" value="00048" />
-      <option name="presentableId" value="LOCAL-00048" />
-      <option name="project" value="LOCAL" />
-      <updated>1487394572877</updated>
-    </task>
     <task id="LOCAL-00049" summary="added views for deleting portfolios">
       <created>1487394766084</created>
       <option name="number" value="00049" />
@@ -823,7 +813,14 @@
       <option name="project" value="LOCAL" />
       <updated>1487748725514</updated>
     </task>
-    <option name="localTasksCounter" value="97" />
+    <task id="LOCAL-00097" summary="changed functions to be tied to models, rather than free-floating import functions">
+      <created>1487813466672</created>
+      <option name="number" value="00097" />
+      <option name="presentableId" value="LOCAL-00097" />
+      <option name="project" value="LOCAL" />
+      <updated>1487813466674</updated>
+    </task>
+    <option name="localTasksCounter" value="98" />
     <servers />
   </component>
   <component name="TodoView">
