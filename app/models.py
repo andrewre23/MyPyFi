@@ -65,6 +65,9 @@ class Portfolio(db.Model):
             holding.update_portfolio_percentage()
 
     def create_optimal_portfolio(self):
+        # old_port = Portfolio.query.filter_by(name=self.name+'_opt').first()
+        # if old_port:
+        #     db.session.delete(old_port)
         opt_port = Portfolio(name=self.name+'_opt',cash=self.cash)
         for holding in self.holdings:
             Holding(holding.symbol,holding.shares,holding.purch_date,holding.purch_price,opt_port.id)

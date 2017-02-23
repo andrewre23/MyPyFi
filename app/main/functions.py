@@ -156,7 +156,13 @@ def gen_optimal_portfolio(portfolio, start_date, rf=0.01):
         tck = sci.splrep(evols, erets,k=2)
     else:
         tck = sci.splrep(evols, erets)
-    opt = sco.fsolve(equations, [rf, prets.mean(), pvols.mean()])
+
+    for x in [2,4,1,5,3]:
+        try:
+            opt = sco.fsolve(equations, [rf, prets.mean()*x, pvols.mean()])
+            break
+        except RuntimeWarning:
+            continue
 
     # plot and save to static folder
     plt.figure(figsize=(10, 5))
@@ -166,7 +172,7 @@ def gen_optimal_portfolio(portfolio, start_date, rf=0.01):
     plt.plot(evols, erets, 'g', lw=4.0)
     cx = np.linspace(0.0, 0.3)
     # CAPM line
-    plt.plot(cx, opt[0] + opt[1] * cx, lw=1.5)
+    plt.plot(cx, rf + ((f(opt[2])-rf)/opt[2]) * cx, lw=1.5)
     plt.plot(opt[2], f(opt[2]), 'r*', markersize=15.0)
     plt.grid(True)
     plt.axhline(0, color='k', ls='--', lw=2.0)
