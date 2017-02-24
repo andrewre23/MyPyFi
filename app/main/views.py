@@ -106,6 +106,11 @@ def portfolio_delete():
     return redirect(url_for('.portfolio_main'))
 
 
+#######################
+# analytical routes
+#######################
+
+
 # route for asking optimization inputs
 @main.route('/portfolio/<name>/optimal/ask', methods=['GET', 'POST'])
 def portfolio_optimal_ask(name):
@@ -217,16 +222,6 @@ def holding_delete(holding_id):
     Portfolio.query.filter_by(id=portfolio_id).first().update()
     flash(str(holding.symbol).upper() + ' successfully deleted!')
     return redirect(url_for('.portfolio', name=session['portfolio']))
-
-
-#######################
-# analytical routes
-#######################
-
-# route for portfolio optimization path
-
-
-
 
 
 # #######################

@@ -153,13 +153,13 @@ def gen_optimal_portfolio(portfolio, start_date, rf=0.01):
     # solve for optimized portfolio
     global tck
     if len(evols) < 3:
-        tck = sci.splrep(evols, erets,k=2)
+        tck = sci.splrep(evols, erets, k=2)
     else:
         tck = sci.splrep(evols, erets)
 
-    for x in [2,4,1,5,3]:
+    for x in [2, 4, 1, 5, 3]:
         try:
-            opt = sco.fsolve(equations, [rf, prets.mean()*x, pvols.mean()])
+            opt = sco.fsolve(equations, [rf, prets.mean() * x, pvols.mean()])
             break
         except RuntimeWarning:
             continue
@@ -172,7 +172,7 @@ def gen_optimal_portfolio(portfolio, start_date, rf=0.01):
     plt.plot(evols, erets, 'g', lw=4.0)
     cx = np.linspace(0.0, 0.3)
     # CAPM line
-    plt.plot(cx, rf + ((f(opt[2])-rf)/opt[2]) * cx, lw=1.5)
+    plt.plot(cx, rf + ((f(opt[2]) - rf) / opt[2]) * cx, lw=1.5)
     plt.plot(opt[2], f(opt[2]), 'r*', markersize=15.0)
     plt.grid(True)
     plt.axhline(0, color='k', ls='--', lw=2.0)
@@ -185,27 +185,23 @@ def gen_optimal_portfolio(portfolio, start_date, rf=0.01):
 
     # create optimal portfolio in database
     portfolio.create_optimal_portfolio()
-    opt_port = Portfolio.query.filter_by(name=portfolio.name+'_opt').first()
+    opt_port = Portfolio.query.filter_by(name=portfolio.name + '_opt').first()
 
     # find optimal portfolio weights
     noa = len(rets.columns)
-    bnds = tuple((0,1) for x in rets.columns)
-    cons = ({'type':'eq','fun': lambda x:statistics(x)[0]-f(opt[2])},
-            {'type': 'eq', 'fun': lambda x: np.sum(x)-1})
-    res = sco.minimize(min_func_port,noa*[1./noa,],method='SLSQP',
+    bnds = tuple((0, 1) for x in rets.columns)
+    cons = ({'type': 'eq', 'fun': lambda x: statistics(x)[0] - f(opt[2])},
+            {'type': 'eq', 'fun': lambda x: np.sum(x) - 1})
+    res = sco.minimize(min_func_port, noa * [1. / noa, ], method='SLSQP',
                        bounds=bnds, constraints=cons)
     opt_weights = abs(res['x'].round(4))
 
     # rebalance opt_portfolio to optimal weights
     total_balance = portfolio.market_value - portfolio.cash
     for i in range(len(rets.columns)):
-        holding = Holding.query.filter_by(symbol=rets.columns[i],portfolio_id=opt_port.id).first()
+        holding = Holding.query.filter_by(symbol=rets.columns[i], portfolio_id=opt_port.id).first()
         new_mkval = opt_weights[i] * total_balance
-        holding.shares = int(round(new_mkval / holding.last_price,0))
+        holding.shares = int(round(new_mkval / holding.last_price, 0))
         holding.purch_price = holding.last_price
         holding.update()
     opt_port.update()
-
-
-
-
