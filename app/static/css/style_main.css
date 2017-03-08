@@ -1,34 +1,41 @@
 .title {
     border-style: ridge;
-    width: 20%;
     margin-left: auto;
     margin-right: auto;
+    padding: 5px;
 }
 
 .container {
     border-style: solid;
     border-color: black;
+    padding: 5px;
 }
 
-#all {
+#complete {
     border-color: blue;
     border-style: double;
     padding: 10px;
+    margin: 10px;
+    width: 98.75%;
+    height: 100%;
 }
 
 #title {
     border-color: blue;
     border-style: double;
-    height: 75px;
+    width: 300px;
+    height: 60px;
 }
 
 #main {
-    margin-top: 10px;
-    padding: 10px;
+
     border-style: dashed;
     border-color: forestgreen;
+    padding: 10px;
+    margin-top: 10px;
     margin-left: auto;
     margin-right: auto;
+    width: 100%;
 }
 
 #main-title {
@@ -36,38 +43,42 @@
     border-style: groove;
     margin-left: auto;
     margin-right: auto;
+    width: 450px;
+    height: 75px;
 }
 
 #main-focus {
-    width: 60%;
+    border-color: red;
     border-style: solid;
-    margin-right: auto;
-    float: left;
     margin: 10px;
+    margin-right: auto;
+    width: 65%;
+    float: left;
 }
 
 #main-options {
-    width: 30%;
-    margin: 10px;
+    border-color: green;
     border-style: solid;
+    margin: 10px;
     margin-left: 10px;
     margin-right: 10px;
+    width: 30%;
     float: right;
 }
 
 #verbage {
-    padding: 10px;
-    width: 80%;
+    border-color: orange;
     border-style: solid;
     margin-left: auto;
     margin-right: auto;
+    padding: 10px;
+    width: 80%;
     clear: both;
 }
 
 #footer {
-    padding: 10px;
-    margin-top: 3px;
     border-style: inset;
     border-color: blueviolet;
-    clear: both;
+    margin-top: 3px;
+    padding: 10px;
 }

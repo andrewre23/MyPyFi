@@ -18,6 +18,10 @@ def index():
 # portfolio routes
 #######################
 
+@main.route('/test', methods=['GET', 'POST'])
+def test_route():
+    return render_template('base-detailed.html')
+
 
 # route for portfolio homepage
 @main.route('/portfolio_main', methods=['GET', 'POST'])
