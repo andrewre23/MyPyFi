@@ -32,7 +32,7 @@ def portfolio_main():
         session['last_update'] = str(dt.date.today())
         flash('Holding prices updated!')
     portfolio_data = Portfolio.query.order_by(Portfolio.market_value.desc()).all()
-    return render_template('portfolio_main.html', portfolio_data=portfolio_data)
+    return render_template('portfolio_main_test.html', portfolio_data=portfolio_data)
 
 
 # route for adding new portfolios

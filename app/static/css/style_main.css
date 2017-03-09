@@ -2,29 +2,36 @@
     border-style: ridge;
     margin-left: auto;
     margin-right: auto;
-    padding: 5px;
+    font-family: "Agency FB";
+    text-align: center;
+    vertical-align: middle;
 }
 
 .container {
     border-style: solid;
     border-color: black;
-    padding: 5px;
 }
 
 #complete {
     border-color: blue;
     border-style: double;
-    padding: 10px;
-    margin: 10px;
-    width: 98.75%;
+    margin: auto;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 100%;
     height: 100%;
+}
+
+#main .container {
+    padding: 10px;
 }
 
 #title {
     border-color: blue;
-    border-style: double;
+    border-style: groove;
     width: 300px;
-    height: 60px;
+    vertical-align: middle;
+
 }
 
 #main {
@@ -36,6 +43,15 @@
     margin-left: auto;
     margin-right: auto;
     width: 100%;
+}
+
+#main h2 {
+    font-family: "Palatino Linotype";
+}
+
+#main th {
+    font-family: "Bitstream Vera Sans Mono";
+    border-bottom: 2pt solid black;
 }
 
 #main-title {
@@ -56,6 +72,15 @@
     float: left;
 }
 
+#portfolio_table {
+    border-collapse: collapse;
+}
+
+#main-focus td {
+    font-family: "Felix Titling";
+    border-bottom: 1pt dotted black;
+}
+
 #main-options {
     border-color: green;
     border-style: solid;
@@ -66,6 +91,15 @@
     float: right;
 }
 
+#options_table {
+    border-bottom: 1pt dotted black;
+}
+
+#main-options td {
+    font-family: Verdana, "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+    border-bottom: 1pt dotted black;
+}
+
 #verbage {
     border-color: orange;
     border-style: solid;
@@ -73,7 +107,11 @@
     margin-right: auto;
     padding: 10px;
     width: 80%;
+    min-height: 1px;
     clear: both;
+    text-align: center;
+    vertical-align: middle;
+    font-family: Castellar;
 }
 
 #footer {
@@ -81,4 +119,6 @@
     border-color: blueviolet;
     margin-top: 3px;
     padding: 10px;
+    text-align: right;
+    font-family: "Trebuchet MS";
 }

@@ -1,0 +1,191 @@
+{% extends "base-detailed.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Portfolio Management{% endblock %}
+
+{% block page_title %}
+<h2><center>MyPyFi</center></h2>
+{% endblock %}
+
+{% block main_title %}
+<h1>Portfolio Management</h1>
+{% endblock %}
+
+{% block main_focus %}
+{% if not portfolio_data|count > 0 %}
+<h1>
+    <center>No Portfolios Found!</center>
+</h1>
+<p>
+<center>There are no portfolios saved</center></p>
+{% else %}
+<h2>
+    <center>Saved Portfolios</center>
+</h2>
+<table style="width:100%" id="portfolio_table">
+    <tr>
+        <th>
+            <center>Name</center>
+        </th>
+        <th>
+            <center>Total Value</center>
+        </th>
+        <th>
+            <center>Amount Invested</center>
+        </th>
+        <th>
+            <center>Total Profit</center>
+        </th>
+        <th>
+            <center>( % )</center>
+        </th>
+        <th>
+            <center>Cash Holdings</center>
+        </th>
+        <th>
+            <center>Number of Holdings</center>
+        </th>
+    </tr>
+    {% for portfolio in portfolio_data %}
+    <tr>
+        <td>
+            <center>{{ portfolio["name"] }}</center>
+        </td>
+        <td>
+            <center>{{ "${:,.2f}".format(portfolio["market_value"]) }}</center>
+        </td>
+        <td>
+            <center>{{ "${:,.2f}".format(portfolio["invested"]) }}</center>
+        </td>
+        <td>
+            <center>{{ "${:,.2f}".format(portfolio["total_profit"]) }}</center>
+        </td>
+        <td>
+            <center>{{ "{0:.2f}%".format(portfolio["profit_percent"]*100) }}</center>
+        </td>
+        <td>
+            <center>{{ "${:,.2f}".format(portfolio["cash"]) }}</center>
+        </td>
+        <td>
+            <center>{{ portfolio["num_holdings"] }}</center>
+        </td>
+
+    </tr>
+    {% endfor %}
+</table>
+
+{% endif %}
+{% endblock %}
+
+{% block main_options %}
+{% if not portfolio_data|count > 0 %}
+<h1>
+    <center>No Portfolios Found!</center>
+</h1>
+<p>
+<center>There are no portfolios saved</center></p>
+{% else %}
+<h2>
+    <center>Options</center>
+</h2>
+<table style="width:100%" id="options_table">
+    <tr>
+        <th><center>Select an option</center></th>
+    </tr>
+    {% for portfolio in portfolio_data %}
+    <tr>
+         <td><center><a class="button" href="{{ url_for('main.portfolio', name=portfolio['name']) }}">View Portfolio</a></center></td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endif %}
+{% endblock %}
+
+{% block verbage %}
+<p>
+Here is where you can choose your portfolio to edit.  You can also add new portfolios by clicking <a class="button" href="{{ url_for('main.portfolio_add') }}">here</a>.
+</p>
+{% endblock %}
+
+
+
+
+
+
+<div class="page-header">
+    <h1>
+        <center>Portfolio Management</center>
+    </h1>
+    <p>
+    <center>Here's where you'll select your portfolio</center>
+    </p>
+</div>
+
+<div style="text-align:center">
+    <a class="button" href="{{ url_for('main.portfolio_add') }}">Add Portfolio</a>
+</div>
+
+{% if not portfolio_data|count > 0 %}
+<h1>
+    <center>No Portfolios Found!</center>
+</h1>
+<p>
+<center>There are no portfolios saved</center></p>
+{% else %}
+<h1>
+    <center>Saved Portfolios</center>
+</h1>
+<table style="width:100%">
+    <tr>
+        <th>
+            <center>Name</center>
+        </th>
+        <th>
+            <center>Total Value</center>
+        </th>
+        <th>
+            <center>Amount Invested</center>
+        </th>
+        <th>
+            <center>Total Profit</center>
+        </th>
+        <th>
+            <center>( % )</center>
+        </th>
+        <th>
+            <center>Cash Holdings</center>
+        </th>
+        <th>
+            <center>Number of Holdings</center>
+        </th>
+    </tr>
+    {% for portfolio in portfolio_data %}
+    <tr>
+        <td>
+            <center>{{ portfolio["name"] }}</center>
+        </td>
+        <td>
+            <center>{{ "${:,.2f}".format(portfolio["market_value"]) }}</center>
+        </td>
+        <td>
+            <center>{{ "${:,.2f}".format(portfolio["invested"]) }}</center>
+        </td>
+        <td>
+            <center>{{ "${:,.2f}".format(portfolio["total_profit"]) }}</center>
+        </td>
+        <td>
+            <center>{{ "{0:.2f}%".format(portfolio["profit_percent"]*100) }}</center>
+        </td>
+        <td>
+            <center>{{ "${:,.2f}".format(portfolio["cash"]) }}</center>
+        </td>
+        <td>
+            <center>{{ portfolio["num_holdings"] }}</center>
+        </td>
+        <td><a class="button" href="{{ url_for('main.portfolio', name=portfolio['name']) }}">View Portfolio</a></td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endif %}
