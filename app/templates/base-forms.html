@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block head %}
+{{ super() }}
+    <link rel="shortcut icon" href="{{ url_for('static', filename='dollar.ico') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/style_main.css') }}" type="text/css">
+    <title>Testing</title>
+{% endblock %}
+
+
+
+{% block main_content %}
+    <div class="title" id="title">
+    {% block page_title %}Page title{% endblock %}
+    </div>
+    <div class="container" id="main">
+        <div class="title" id="main-title">
+            {% block main_title %}Main Title{% endblock %}
+        </div>
+        <div class="container" id="main-focus">
+            {% block main_focus %}Main focus{% endblock %}
+        </div>
+
+        <div class="container" id="main-options">
+            {% block main_options %}main options{% endblock %}
+        </div>
+    </div>
+
+<div class="footer" id="footer">
+    Andrew Edmonds &copy; 2017
+</div>
+{% endblock %}
+
+
+

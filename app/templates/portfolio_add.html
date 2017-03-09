@@ -1,18 +1,13 @@
-{% extends "base.html" %}
+{% extends "base-forms.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
-{% block title %}MyPyFi{% endblock %}
+{% block title %}Add Portfolio{% endblock %}
 
-{% block page_content %}
-<div class="page-header">
-    <h1>
-        <center>Add A Portfolio</center>
-    </h1>
-    <p>
-    <center>Here's where you'll create a new portfolio</center>
-    </p>
-</div>
+{% block page_title %}<h2><center>MyPyFi</center></h2>{% endblock %}
 
-{{ wtf.quick_form(form) }}
+{% block main_title %}<h1>Add A Portfolio</h1>{% endblock %}
 
-{% endblock %}
+{% block main_focus %}{{ wtf.quick_form(form) }}{% endblock %}
+
+{% block main_options %}main options{% endblock %}
+

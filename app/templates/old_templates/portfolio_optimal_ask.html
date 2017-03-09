@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}MyPyFi{% endblock %}
+
+{% block main_content %}
+<div class="page-header">
+    <h1>
+        <center>Optimize portfolio {{ session['portfolio'] }}</center>
+    </h1>
+    <p>
+    <center>Here's where you'll view your optimal portfolio</center>
+    </p>
+    <p>
+    <center><a class="button" href="{{ url_for('main.portfolio', name=session['portfolio']) }}">Return to your
+        portfolio</a></center>
+    </p>
+</div>
+
+{{ wtf.quick_form(form) }}
+
+{% endblock %}
