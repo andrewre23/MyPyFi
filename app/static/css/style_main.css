@@ -93,6 +93,7 @@
 
 #options_table {
     border-bottom: 1pt dotted black;
+    text-align: center;
 }
 
 #main-options td {

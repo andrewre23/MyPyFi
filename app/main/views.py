@@ -62,7 +62,7 @@ def portfolio(name):
         session['portfolio'] = str(portfolio.name)
     holding_data = portfolio.holdings.order_by(Holding.portfolio_percent.desc()).all()
 
-    return render_template('portfolio.html', name=name, holding_data=holding_data)
+    return render_template('portfolio_test.html', name=name, holding_data=holding_data)
 
 
 # route for adding new portfolios
