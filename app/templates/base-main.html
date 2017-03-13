@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block head %}
+{{ super() }}
+<link rel="shortcut icon" href="{{ url_for('static', filename='dollar.ico') }}" type="image/x-icon">
+<link rel="stylesheet" href="{{ url_for('static',filename='css/style_main.css') }}" type="text/css">
+<title>Testing</title>
+{% endblock %}
+
+
+<div class="container" id="main">
+    {% block main_content %}{% endblock %}
+</div>
