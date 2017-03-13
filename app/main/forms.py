@@ -68,7 +68,7 @@ class OptimizationTimeSpanForm(Form):
                            validators=[DataRequired()])
     risk_free = FloatField('Enter risk-free interest rate:', default=0.01,
                            validators=[NumberRange(min=0, max=None, message='No negative interest rates')])
-    submit = SubmitField('View Optimal Portfolio')
+    submit = SubmitField('Generate Optimal Portfolio')
 
 
 # define TickerForm class for adding new HDF5 ticker data

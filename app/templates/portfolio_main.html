@@ -4,7 +4,9 @@
 {% block title %}Portfolio Management{% endblock %}
 
 {% block page_title %}
-<h2><center>MyPyFi</center></h2>
+<h2>
+    <center>MyPyFi</center>
+</h2>
 {% endblock %}
 
 {% block main_title %}
@@ -90,12 +92,21 @@
 </h2>
 <table style="width:100%" id="options_table">
     <tr>
-        <th colspan="2"><center>Select an option</center></th>
+        <th colspan="2">
+            <center><a class="button" href="{{ url_for('main.portfolio_add') }}">Add a portfolio</a></center>
+        </th>
     </tr>
     {% for portfolio in portfolio_data %}
     <tr>
-        <td><center><a class="button" href="{{ url_for('main.portfolio', name=portfolio['name']) }}">View / Edit</a></center></td>
-        <td><center><a class="button" href="{{ url_for('main.portfolio_optimal_ask', name=portfolio['name']) }}">Optimize</a></center></td>
+        <td>
+            <center><a class="button" href="{{ url_for('main.portfolio_optimal_ask', name=portfolio['name']) }}">Optimize</a>
+            </center>
+        </td>
+        <td>
+            <center><a class="button" href="{{ url_for('main.portfolio', name=portfolio['name']) }}">View / Edit</a>
+            </center>
+        </td>
+
     </tr>
     {% endfor %}
 </table>
@@ -105,6 +116,8 @@
 
 {% block verbage %}
 <p>
-Here is where you can choose your portfolio to edit.  You can also add new portfolios by clicking <a class="button" href="{{ url_for('main.portfolio_add') }}">here</a>.
+    This is the portfolio management page. Make a selection for one of the portfolios above, or create a new portfolio.
+    Once you have created a portfolio, you will be able to generate the optimal portfolio based on your holdings (based
+    on Modern Portfolio Theory).  You'll be able to view the Sharpe ratio of the portfolio as well.
 </p>
 {% endblock %}
