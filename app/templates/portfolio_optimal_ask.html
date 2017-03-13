@@ -1,22 +1,6 @@
 {% extends "base-detailed.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
-{% block zzmain_content %}
-<div class="page-header">
-    <h1>
-        <center>Optimize portfolio {{ session['portfolio'] }}</center>
-    </h1>
-    <p>
-    <center>Here's where you'll view your optimal portfolio</center>
-    </p>
-    <p>
-    <center><a class="button" href="{{ url_for('main.portfolio', name=session['portfolio']) }}">Return to your
-        portfolio</a></center>
-    </p>
-</div>
-
-
-{% endblock %}
 
 {% block title %}Edit Holding{% endblock %}
 
@@ -25,17 +9,17 @@
     <center>MyPyFi</center>
 </h2>{% endblock %}
 
-{% block main_title %}<h1>Optimize portfolio {{ session['portfolio'] }}</h1>{% endblock %}
+{% block main_title %}<h1>Optimize portfolio: {{ name }}</h1>{% endblock %}
 
 {% block main_focus %}{{ wtf.quick_form(form) }}{% endblock %}
 
 {% block main_options %}    <p>
-<center><a class="button" href="{{ url_for('main.portfolio', name=session['portfolio']) }}">Return to your
+<center><a class="button" href="{{ url_for('main.portfolio', name=name) }}">View
     portfolio</a></center>
 </p>{% endblock %}
 
 {% block verbage %}
 <p>
-<center>Here's where you'll view your optimal portfolio</center>
+<center>Enter start date for the range of historic returns to use for optimization.</center>
 </p>
 {% endblock %}
