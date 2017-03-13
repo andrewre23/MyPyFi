@@ -1,9 +1,7 @@
-{% extends "base.html" %}
+{% extends "base-detailed.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
-{% block title %}MyPyFi{% endblock %}
-
-{% block main_content %}
+{% block zzmain_content %}
 <div class="page-header">
     <h1>
         <center>Optimize portfolio {{ session['portfolio'] }}</center>
@@ -17,6 +15,27 @@
     </p>
 </div>
 
-{{ wtf.quick_form(form) }}
 
+{% endblock %}
+
+{% block title %}Edit Holding{% endblock %}
+
+{% block page_title %}
+<h2>
+    <center>MyPyFi</center>
+</h2>{% endblock %}
+
+{% block main_title %}<h1>Optimize portfolio {{ session['portfolio'] }}</h1>{% endblock %}
+
+{% block main_focus %}{{ wtf.quick_form(form) }}{% endblock %}
+
+{% block main_options %}    <p>
+<center><a class="button" href="{{ url_for('main.portfolio', name=session['portfolio']) }}">Return to your
+    portfolio</a></center>
+</p>{% endblock %}
+
+{% block verbage %}
+<p>
+<center>Here's where you'll view your optimal portfolio</center>
+</p>
 {% endblock %}

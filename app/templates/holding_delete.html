@@ -1,22 +1,29 @@
-{% extends "base.html" %}
+{% extends "base-detailed.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
-{% block title %}MyPyFi{% endblock %}
 
-{% block page_content %}
-<div class="page-header">
-    <h1>
-        <center>Delete {{ symbol | upper }} from {{ name }}</center>
-    </h1>
-    <p>
-    <center>Delete {{ symbol | upper }} (holding_id: {{ holding_id }})</center>
-    </p>
-</div>
+{% block title %}Delete Holding{% endblock %}
 
+{% block page_title %}
+<h2>
+    <center>MyPyFi</center>
+</h2>{% endblock %}
+
+{% block main_title %}<h1>Delete {{ symbol | upper }} from {{ name }}</h1>{% endblock %}
+
+{% block main_focus %}
 <div style="text-align:center">
     <p>Are you sure you want to delete {{ symbol | upper }} from {{ name }}?</p>
     <a class="button" href="{{ url_for('main.holding_delete', holding_id=holding_id) }}">Yes</a>
     <a class="button" href="{{ url_for('main.portfolio', name=name) }}">No</a>
-</div>
+</div>{% endblock %}
 
+{% block main_options %}    <p>
+<center><a class="button" href="{{ url_for('main.portfolio_main') }}">Return to the main page</a></center>
+</p>{% endblock %}
+
+{% block verbage %}
+<p>
+<center>Delete {{ symbol | upper }} (holding_id: {{ holding_id }})</center>
+</p>
 {% endblock %}

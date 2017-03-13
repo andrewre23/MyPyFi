@@ -4,7 +4,9 @@
 {% block title %}{{ name }}{% endblock %}
 
 {% block page_title %}
-<h2><center>MyPyFi</center></h2>
+<h2>
+    <center>MyPyFi</center>
+</h2>
 {% endblock %}
 
 {% block main_title %}
@@ -53,7 +55,7 @@
         </th>
     </tr>
     {% for holding in holding_data %}
- <tr>
+    <tr>
         <td>
             <center>{{ holding["symbol"] | upper }}</center>
         </td>
@@ -102,12 +104,14 @@
 </h2>
 <table style="width:100%" id="options_table">
     <tr>
-        <th><center>Select an option</center></th>
+        <th>
+            <center>Select an option</center>
+        </th>
     </tr>
     {% for holding in holding_data %}
     <tr>
         <td>
-        <a class="button"
+            <a class="button"
                href="{{ url_for('main.holding_edit', name=name, symbol=holding['symbol'], holding_id = holding['id'])}}">Edit</a>
             <a class="button"
                href="{{ url_for('main.holding_delete_ask', name=name, symbol=holding['symbol'], holding_id = holding['id'])}}">Delete</a>
@@ -121,7 +125,11 @@
 
 {% block verbage %}
 <p>
-Here is where you can choose to edit holdings within your portfolio.  You can also <a class="button" href="{{ url_for('main.portfolio_optimal_ask', name=name) }}">OPTIMIZE</a> your portfolio, or <a class="button" href="{{ url_for('main.portfolio_delete_ask', name=name) }}">DELETE</a> it as well.
+    Here is where you can choose to <a class="button" href="{{ url_for('main.holding_add', name=name) }}">ADD</a>
+    holdings to your portfolio, or <a class="button" href="{{ url_for('main.portfolio_edit', name=name) }}">EDIT</a>
+    your portfolio data. You can also <a class="button" href="{{ url_for('main.portfolio_optimal_ask', name=name) }}">OPTIMIZE</a>
+    your portfolio, or <a class="button" href="{{ url_for('main.portfolio_delete_ask', name=name) }}">DELETE</a> it as
+    well.
 </p>
 {% endblock %}
 

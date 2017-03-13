@@ -42,7 +42,7 @@ def portfolio_add():
     if form.validate_on_submit():
         portfolio = Portfolio.query.filter_by(name=form.name.data).first()
         if portfolio is None:
-            portfolio = Portfolio(name=form.name.data, cash=round(form.cash.data, 2))
+            portfolio = Portfolio(name=form.name.data.strip(), cash=round(form.cash.data, 2))
             db.session.add(portfolio)
             session['portfolio'] = portfolio.name
             flash('Portfolio successfully added!')
@@ -62,7 +62,7 @@ def portfolio(name):
         session['portfolio'] = str(portfolio.name)
     holding_data = portfolio.holdings.order_by(Holding.portfolio_percent.desc()).all()
 
-    return render_template('portfolio_test.html', name=name, holding_data=holding_data)
+    return render_template('portfolio.html', name=name, holding_data=holding_data)
 
 
 # route for adding new portfolios
@@ -80,7 +80,7 @@ def portfolio_edit(name):
             portfolio.update()
             session['portfolio'] = portfolio.name
             flash('Portfolio data successfully updated!')
-            return redirect(url_for('.portfolio', name=name))
+            return redirect(url_for('.portfolio', name=portfolio.name))
         else:
             flash('Error updating portfolio data')
     return render_template('portfolio_edit.html', name=name, form=form)

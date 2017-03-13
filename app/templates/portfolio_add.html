@@ -9,5 +9,6 @@
 
 {% block main_focus %}{{ wtf.quick_form(form) }}{% endblock %}
 
-{% block main_options %}main options{% endblock %}
-
+{% block main_options %}    <p>
+<center><a class="button" href="{{ url_for('main.portfolio_main') }}">Return to the main page</a></center>
+</p>{% endblock %}

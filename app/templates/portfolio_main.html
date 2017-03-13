@@ -90,11 +90,12 @@
 </h2>
 <table style="width:100%" id="options_table">
     <tr>
-        <th><center>Select an option</center></th>
+        <th colspan="2"><center>Select an option</center></th>
     </tr>
     {% for portfolio in portfolio_data %}
     <tr>
-         <td><center><a class="button" href="{{ url_for('main.portfolio', name=portfolio['name']) }}">View Portfolio</a></center></td>
+        <td><center><a class="button" href="{{ url_for('main.portfolio', name=portfolio['name']) }}">View / Edit</a></center></td>
+        <td><center><a class="button" href="{{ url_for('main.portfolio_optimal_ask', name=portfolio['name']) }}">Optimize</a></center></td>
     </tr>
     {% endfor %}
 </table>

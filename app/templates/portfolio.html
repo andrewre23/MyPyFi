@@ -1,24 +1,19 @@
-{% extends "base.html" %}
+{% extends "base-detailed.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
-{% block title %}MyPyFi{% endblock %}
+{% block title %}{{ name }}{% endblock %}
 
-{% block main_content %}
-<div class="page-header">
-    <h1>
-        <center>{{ name }}</center>
-    </h1>
-    <p>
-    <center>Here's where manage and edit your portfolio</center>
-    </p>
-</div>
+{% block page_title %}
+<h2>
+    <center>MyPyFi</center>
+</h2>
+{% endblock %}
 
-<div style="text-align:center">
-    <a class="button" href="{{ url_for('main.portfolio_edit', name=name) }}">Edit Portfolio Data</a>
-    <p></p>
-    <a class="button" href="{{ url_for('main.holding_add', name=name) }}">Add Holding</a>
-</div>
+{% block main_title %}
+<h1>{{ name }}</h1>
+{% endblock %}
 
+{% block main_focus %}
 {% if not holding_data|count > 0 %}
 <h1>
     <center>No Holdings Found!</center>
@@ -26,10 +21,10 @@
 <p>
 <center>There are no holdings saved in the portfolio {{ name }}</center></p>
 {% else %}
-<h1>
+<h2>
     <center>Holdings</center>
-</h1>
-<table style="width:100%">
+</h2>
+<table style="width:100%" id="portfolio_table">
     <tr>
         <th>
             <center>Symbol</center>
@@ -89,6 +84,33 @@
             <center>{{ "{:%m-%d-%Y}".format(holding["purch_date"]) }}</center>
         </td>
         <td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endif %}
+{% endblock %}
+
+{% block main_options %}
+{% if not holding_data|count > 0 %}
+<h1>
+    <center>No Holdings Found!</center>
+</h1>
+<p>
+<center>There are no holdings saved in the portfolio {{ name }}</center></p>
+{% else %}
+<h2>
+    <center>Options</center>
+</h2>
+<table style="width:100%" id="options_table">
+    <tr>
+        <th>
+            <center>Select an option</center>
+        </th>
+    </tr>
+    {% for holding in holding_data %}
+    <tr>
+        <td>
             <a class="button"
                href="{{ url_for('main.holding_edit', name=name, symbol=holding['symbol'], holding_id = holding['id'])}}">Edit</a>
             <a class="button"
@@ -99,8 +121,38 @@
 </table>
 
 {% endif %}
-<div style="text-align:center">
-    <a class="button" href="{{ url_for('main.portfolio_optimal_ask', name=name) }}">Optimize Portfolio</a>
-    <a class="button" href="{{ url_for('main.portfolio_delete_ask', name=name) }}">Delete Portfolio</a>
-</div>
 {% endblock %}
+
+{% block verbage %}
+<table style="width:100%" id="verbage_table">
+    <tr>
+        <th>
+            <center>Here is where you can choose to:</center>
+        </th>
+    </tr>
+
+    <tr>
+        <td>
+            <a class="button" href="{{ url_for('main.holding_add', name=name) }}">ADD</a>
+            holdings to your portfolio
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <a class="button" href="{{ url_for('main.portfolio_edit', name=name) }}">EDIT</a>
+            your portfolio data
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <a class="button" href="{{ url_for('main.portfolio_delete_ask', name=name) }}">DELETE</a> the entire
+            portfolio
+        </td>
+    </tr>
+
+</table>
+{% endblock %}
+
+
+
+

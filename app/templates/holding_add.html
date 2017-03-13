@@ -1,7 +1,6 @@
-{% extends "base.html" %}
+{% extends "base-detailed.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
-{% block title %}MyPyFi{% endblock %}
 
 {% block page_content %}
 <div class="page-header">
@@ -20,3 +19,24 @@
 {{ wtf.quick_form(form) }}
 
 {% endblock %}
+
+
+{% block title %}Add Holding{% endblock %}
+
+{% block page_title %}
+<h2>
+    <center>MyPyFi</center>
+</h2>{% endblock %}
+
+{% block main_title %}<h1>Add A Holding to {{ session['portfolio'] }}</h1>{% endblock %}
+
+{% block main_focus %}{{ wtf.quick_form(form) }}{% endblock %}
+
+{% block main_options %}    <p>
+<center><a class="button" href="{{ url_for('main.portfolio', name=session['portfolio']) }}">Return to your
+    portfolio</a></center>
+</p>{% endblock %}
+
+{% block verbage %}    <p>
+<center>Here's where you'll add new holdings to your portfolio</center>
+</p> {% endblock %}
