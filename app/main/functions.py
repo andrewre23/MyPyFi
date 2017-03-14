@@ -205,3 +205,7 @@ def gen_optimal_portfolio(portfolio, start_date, rf=0.01):
         holding.purch_price = holding.last_price
         holding.update()
     opt_port.update()
+
+    # adjust cash-holdings based on new invested total
+    opt_port.cash += (portfolio.market_value - opt_port.market_value)
+    opt_port.update()
