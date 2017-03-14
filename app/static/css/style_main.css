@@ -66,10 +66,11 @@ body {
     margin-right: auto;
     width: 450px;
     height: 75px;
+    background-color: white;
 }
 
 #main-focus {
-    background-color: ghostwhite;
+    background-color: white;
     border-color: #B28800;
     border-style: solid;
     margin: 10px;
@@ -84,13 +85,18 @@ body {
     background-color: #F4F1F7;
 }
 
+#main-focus th {
+    background-color: ghostwhite;
+}
+
 #main-focus td {
     font-family: "Felix Titling";
     border-bottom: 1pt dotted black;
+    background-color: white;
 }
 
 #main-options {
-    background-color: ghostwhite;
+    background-color: white;
     border-color: #B28800;
     border-style: solid;
     margin: 10px;
@@ -106,9 +112,14 @@ body {
     background-color: #F4F1F7;
 }
 
+#main-options th {
+    background-color: ghostwhite;
+}
+
 #main-options td {
     font-family: Verdana, "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
     border-bottom: 1pt dotted black;
+    background-color: white;
 }
 
 #verbage {
@@ -138,12 +149,16 @@ body {
 }
 
 .button {
-    background-color: whitesmoke;
+    background-color: white;
     color: #001BB2;
     border: thin;
-
     text-align: center;
     text-decoration: none;
     display: inline-block;
     cursor: pointer;
+}
+
+img {
+   padding:1px;
+   border:1px solid #021a40;
 }
