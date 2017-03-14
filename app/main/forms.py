@@ -80,7 +80,6 @@ class SimulationForm(Form):
     submit = SubmitField('Generate Optimal Portfolio')
 
 
-
 # define TickerForm class for adding new HDF5 ticker data
 class TickerForm(Form):
     symbol = StringField('Stock symbol:', validators=[DataRequired()])

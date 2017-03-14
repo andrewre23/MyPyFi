@@ -187,7 +187,6 @@ def portfolio_simulate_ask(name):
     return render_template('portfolio/simulation/portfolio_simulate_ask.html', name=name, form=form)
 
 
-
 #######################
 # holding routes
 #######################
