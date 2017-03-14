@@ -95,6 +95,10 @@ body {
     background-color: white;
 }
 
+#focus_total_row {
+    font-weight: bold;
+}
+
 #main-options {
     background-color: white;
     border-color: #B28800;
@@ -121,7 +125,9 @@ body {
     border-bottom: 1pt dotted black;
     background-color: white;
 }
-
+#options_cash_row{
+    font-weight: bold;
+}
 #verbage {
     border-color: #FFC200;
     border-style: solid;
@@ -147,6 +153,11 @@ body {
     clear: both;
 
 }
+
+#verbage th {
+    display: inline-block;
+}
+
 
 .button {
     background-color: white;

@@ -21,6 +21,7 @@
 <p>
 <center>There are no holdings saved in the portfolio {{ name }}</center></p>
 {% else %}
+
 <h2>
     <center>Holdings</center>
 </h2>
@@ -86,6 +87,80 @@
         <td>
     </tr>
     {% endfor %}
+        <tr id="cash_row">
+        <td>
+            <center>CASH</center>
+        </td>
+        <td>
+            <center>{{ "${:,.2f}".format(cash) }}</center>
+        </td>
+        <td>
+            <center>--</center>
+        </td>
+        <td>
+            <center>--
+            </center>
+        </td>
+        <td>
+            <center>{{
+                "{0:.2f}%".format(100*cash/(holding_data|sum(attribute="market_value")+cash))
+                }}
+            </center>
+        </td>
+        <td>
+            <center>--
+            </center>
+        </td>
+        <td>
+            <center>--
+            </center>
+        </td>
+        <td>
+            <center>--
+            </center>
+        </td>
+        <td>
+            <center>--
+            </center>
+        </td>
+    </tr>
+    <tr id="focus_total_row">
+        <td>
+            <center>TOTALS</center>
+        </td>
+        <td>
+            <center>{{ "${:,.2f}".format(holding_data|sum(attribute="market_value")) }}</center>
+        </td>
+        <td>
+            <center>{{ "${:,.2f}".format(holding_data|sum(attribute="total_profit")) }}</center>
+        </td>
+        <td>
+            <center>{{
+                "{0:.2f}%".format(100*holding_data|sum(attribute="total_profit")/holding_data|sum(attribute="market_value"))
+                }}
+            </center>
+        </td>
+        <td>
+            <center>--
+            </center>
+        </td>
+        <td>
+            <center>--
+            </center>
+        </td>
+        <td>
+            <center>--
+            </center>
+        </td>
+        <td>
+            <center>--
+            </center>
+        </td>
+        <td>
+            <center>--
+            </center>
+        </td>
+    </tr>
 </table>
 
 {% endif %}
@@ -124,13 +199,32 @@
 {% endblock %}
 
 {% block verbage %}
-<table style="width:100%" id="verbage_table">
+<table style="width:100%" id="verbage_action_table">
     <tr>
         <th>
-            <center>Here is where you can choose to:</center>
+            <center>Please select from the following analytical options:</center>
         </th>
     </tr>
-
+    <tr>
+        <td>
+            <a class="button" href="{{ url_for('main.portfolio_optimal_ask', name=name) }}">OPTIMIZE</a>
+            your portfolio based on Modern Portfolio Theory (MPT)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <a class="button" href="{{ url_for('main.portfolio_simulate_ask', name=name) }}">SIMULATE</a>
+            the forward movements of your portfolio
+        </td>
+    </tr>
+</table>
+<p> </p>
+<table style="width:100%" id="verbage_edit_table">
+    <tr>
+        <th>
+            <center>You may also choose to:</center>
+        </th>
+    </tr>
     <tr>
         <td>
             <a class="button" href="{{ url_for('main.holding_add', name=name) }}">ADD</a>
@@ -149,7 +243,6 @@
             portfolio
         </td>
     </tr>
-
 </table>
 {% endblock %}
 

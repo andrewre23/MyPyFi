@@ -1,0 +1,25 @@
+{% extends "base-detailed.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+
+{% block title %}Simulation{% endblock %}
+
+{% block page_title %}
+<h2>
+    <center>MyPyFi</center>
+</h2>{% endblock %}
+
+{% block main_title %}<h1>Simulation: {{ name }}</h1>{% endblock %}
+
+{% block main_focus %}{{ wtf.quick_form(form) }}{% endblock %}
+
+{% block main_options %}    <p>
+<center><a class="button" href="{{ url_for('main.portfolio', name=name) }}">View
+    portfolio</a></center>
+</p>{% endblock %}
+
+{% block verbage %}
+<p>
+<center>Enter start date for the range of historic returns to use for optimization.</center>
+</p>
+{% endblock %}

@@ -2,7 +2,8 @@ from flask import render_template, session, redirect, url_for, flash, abort
 from .. import db
 from ..models import Portfolio, Holding
 from . import main
-from .forms import TickerForm, PortfolioForm, PortfolioEditForm, HoldingForm, HoldingEditForm, OptimizationTimeSpanForm
+from .forms import TickerForm, PortfolioForm, PortfolioEditForm, \
+    HoldingForm, HoldingEditForm, OptimizationForm, SimulationForm
 from .functions import gen_optimal_portfolio
 
 import datetime as dt
@@ -32,7 +33,7 @@ def portfolio_main():
         session['last_update'] = str(dt.date.today())
         flash('Holding prices updated!')
     portfolio_data = Portfolio.query.order_by(Portfolio.market_value.desc()).all()
-    return render_template('portfolio_main.html', portfolio_data=portfolio_data)
+    return render_template('portfolio/portfolio_main.html', portfolio_data=portfolio_data)
 
 
 # route for adding new portfolios
@@ -49,7 +50,7 @@ def portfolio_add():
             return redirect(url_for('.portfolio_main'))
         else:
             flash('That portfolio name is already taken')
-    return render_template('portfolio_add.html', form=form)
+    return render_template('portfolio/portfolio_add.html', form=form)
 
 
 # route for portfolio-specific pages
@@ -62,7 +63,7 @@ def portfolio(name):
         session['portfolio'] = str(portfolio.name)
     holding_data = portfolio.holdings.order_by(Holding.portfolio_percent.desc()).all()
 
-    return render_template('portfolio.html', name=name, holding_data=holding_data)
+    return render_template('portfolio/portfolio.html', name=name, holding_data=holding_data, cash=portfolio.cash)
 
 
 # route for adding new portfolios
@@ -83,7 +84,7 @@ def portfolio_edit(name):
             return redirect(url_for('.portfolio', name=portfolio.name))
         else:
             flash('Error updating portfolio data')
-    return render_template('portfolio_edit.html', name=name, form=form)
+    return render_template('portfolio/portfolio_edit.html', name=name, form=form)
 
 
 # route for confirming deletion of portfolios
@@ -94,7 +95,7 @@ def portfolio_delete_ask(name):
         abort(404)
     else:
         session['portfolio'] = str(portfolio.name)
-    return render_template('portfolio_delete.html', name=name)
+    return render_template('portfolio/portfolio_delete.html', name=name)
 
 
 # route for deleting portfolios
@@ -111,21 +112,21 @@ def portfolio_delete():
 
 
 #######################
-# analytical routes
+# optimal routes
 #######################
 
 
 # route for asking optimization inputs
 @main.route('/portfolio/<name>/optimal/ask', methods=['GET', 'POST'])
 def portfolio_optimal_ask(name):
-    form = OptimizationTimeSpanForm()
+    form = OptimizationForm()
     if form.validate_on_submit():
         start_date = form.start_date.data
         risk_free = round(form.risk_free.data, 4)
         portfolio = Portfolio.query.filter_by(name=name).first()
         gen_optimal_portfolio(portfolio, start_date, risk_free)
         return redirect(url_for('.portfolio_optimized', name=name + '_opt'))
-    return render_template('portfolio_optimal_ask.html', name=name, form=form)
+    return render_template('portfolio/optimal/portfolio_optimal_ask.html', name=name, form=form)
 
 
 # route for viewing optimized portfolio and rebalancing or keeping changes
@@ -136,7 +137,7 @@ def portfolio_optimized(name):
         abort(404)
     portfolio.update()
     holding_data = portfolio.holdings.order_by(Holding.portfolio_percent.desc()).all()
-    return render_template('portfolio_optimized.html', name=name, holding_data=holding_data)
+    return render_template('portfolio/optimal/portfolio_optimized.html', name=name, holding_data=holding_data)
 
 
 # route for keeping current portfolio
@@ -169,6 +170,25 @@ def portfolio_optimized_rebalance(name):
 
 
 #######################
+# simulation routes
+#######################
+
+
+# route for asking optimization inputs
+@main.route('/portfolio/<name>/simulate/ask', methods=['GET', 'POST'])
+def portfolio_simulate_ask(name):
+    form = SimulationForm()
+    if form.validate_on_submit():
+        start_date = form.start_date.data
+        risk_free = round(form.risk_free.data, 4)
+        portfolio = Portfolio.query.filter_by(name=name).first()
+        gen_optimal_portfolio(portfolio, start_date, risk_free)
+        return redirect(url_for('.portfolio_optimized', name=name + '_opt'))
+    return render_template('portfolio/simulation/portfolio_simulate_ask.html', name=name, form=form)
+
+
+
+#######################
 # holding routes
 #######################
 
@@ -185,7 +205,7 @@ def holding_add(name):
         flash('Holding successfully added!')
         Portfolio.query.filter_by(name=session['portfolio']).first().update()
         return redirect(url_for('.holding_add', name=name))
-    return render_template('holding_add.html', form=form, name=name)
+    return render_template('holding/holding_add.html', form=form, name=name)
 
 
 # route for editing holdings
@@ -204,7 +224,7 @@ def holding_edit(name, symbol, holding_id):
         Portfolio.query.filter_by(id=holding.portfolio_id).first().update()
         flash('Holding successfully edited!')
         return redirect(url_for('.portfolio', name=session['portfolio']))
-    return render_template('holding_edit.html', form=form, symbol=symbol)
+    return render_template('holding/holding_edit.html', form=form, symbol=symbol)
 
 
 # route for confirming deletion of holdings
@@ -213,7 +233,7 @@ def holding_delete_ask(name, symbol, holding_id):
     holding = Holding.query.filter_by(id=holding_id).first()
     if holding is None:
         abort(404)
-    return render_template('holding_delete.html', name=session['portfolio'], symbol=holding.symbol,
+    return render_template('holding/holding_delete.html', name=session['portfolio'], symbol=holding.symbol,
                            holding_id=holding.id)
 
 
@@ -242,7 +262,7 @@ def ticker_data():
              'end': dt.datetime(2016, 12, 31).date(), 'freq': 'M', 'vals': 100,
              'location': 'C:/Users/Admin/PythonData/MyPyFi/'}
     dataset = [test1, test2]
-    return render_template('ticker_data.html', dataset=dataset)
+    return render_template('ticker/ticker_data.html', dataset=dataset)
 
 
 # route for page to add ticker data
@@ -252,4 +272,4 @@ def ticker_add():
     if form.validate_on_submit():
         pass
 
-    return render_template('ticker_add.html', form=form)
+    return render_template('ticker/ticker_add.html', form=form)
