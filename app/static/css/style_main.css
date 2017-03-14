@@ -101,9 +101,8 @@ body {
 }
 
 #options_table {
-    border-bottom: 1pt dotted black;
     text-align: center;
-    border-style: ridge;
+    border-style: solid;
     background-color: #F4F1F7;
 }
 
@@ -136,4 +135,15 @@ body {
     font-family: "Trebuchet MS";
     clear: both;
 
+}
+
+.button {
+    background-color: whitesmoke;
+    color: #001BB2;
+    border: thin;
+
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
 }
