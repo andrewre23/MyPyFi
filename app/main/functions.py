@@ -124,15 +124,22 @@ class optimized_portfolio(object):
         ind = np.argmin(self.tvols)
         evols = self.tvols[ind:]
         erets = self.trets[ind:]
-        lastval = None
         evols = evols.round(8)
         erets = erets.round(8)
         # remove duplicate volatility values for interpolation
+        lower = None; upper = None
+        midpt = round(len(evols) / 2)
         for i in range(len(evols) - 1):
+            # iterate through evols list and determine upper and
+            # lower limites of range that does not have identical
+            # evol values <-- needed for interpolation
             if evols[i] == evols[i + 1]:
-                lastval = i + 1
-                break
-        return erets[:lastval], evols[:lastval]
+                if i <= midpt:
+                    lower = i + 1
+                else:
+                    upper = i + 1
+                    break
+        return erets[lower:upper], evols[lower:upper]
 
     def solve_optimized_port(self):
         # solve for optimized portfolio
