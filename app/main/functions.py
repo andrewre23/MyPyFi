@@ -5,6 +5,7 @@ import os
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
+
 # class definition for optimized portfolio
 # to hold methods and attributes needed while optimizing
 class optimized_portfolio(object):
@@ -37,11 +38,12 @@ class optimized_portfolio(object):
     plot_optimal_portfolio:
         plot portfolio into static folder
     """
-    def __init__(self, portfolio, start_date,rf=0.01):
+
+    def __init__(self, portfolio, start_date, rf=0.01):
         # initialize input parameters
-        self.portfolio = portfolio          # portfolio to optimize
-        self.start_date = start_date        # start date for historical returns
-        self.rf = rf                        # risk-free interest rate
+        self.portfolio = portfolio  # portfolio to optimize
+        self.start_date = start_date  # start date for historical returns
+        self.rf = rf  # risk-free interest rate
 
         # initialize variables for calculation
         # returns DataFrame object
@@ -66,8 +68,6 @@ class optimized_portfolio(object):
         # rebalance optimal portfolio
         self.rebalance_opt_port()
 
-
-
     def gen_returns_dataframe(self, portfolio, start_date):
         # function to return DataFrame with daily returns
         # of holdings in portfolio
@@ -84,7 +84,7 @@ class optimized_portfolio(object):
         data.columns = symbols
         return np.log(data / data.shift(1))
 
-    def gen_port_rets_and_vol(self,portfolio, samples=2500):
+    def gen_port_rets_and_vol(self, portfolio, samples=2500):
         # function to generate portfolio returns and volatility
         # based off returns from start date argument
         import numpy as np
@@ -202,8 +202,7 @@ class optimized_portfolio(object):
         self.opt_port.cash += (self.portfolio.market_value - self.opt_port.market_value)
         self.opt_port.update()
 
-
-    def statistics(self,weights):
+    def statistics(self, weights):
         """ Returns portfolio statitstics.
 
         Parameters
@@ -226,29 +225,24 @@ class optimized_portfolio(object):
         pvol = np.sqrt(np.dot(weights.T, np.dot(self.rets.cov() * 252, weights)))
         return np.array([pret, pvol, pret / pvol])
 
-
-    def min_func_sharpe(self,weights):
+    def min_func_sharpe(self, weights):
         return -self.statistics(weights)[2]
 
-
-    def min_func_variance(self,weights):
+    def min_func_variance(self, weights):
         return self.statistics(weights)[1] ** 2
 
-
-    def min_func_port(self,weights):
+    def min_func_port(self, weights):
         return self.statistics(weights)[1]
 
-    def f(self,x):
+    def f(self, x):
         # efficient frontier function (splines approximation)
         import scipy.interpolate as sci
         return sci.splev(x, self.tck, der=0)
-
 
     def df(self, x):
         # efficient frontier function (splines approximation)
         import scipy.interpolate as sci
         return sci.splev(x, self.tck, der=1)
-
 
     def equations(self, p, rf=0.01):
         eq1 = rf - p[0]
@@ -256,11 +250,8 @@ class optimized_portfolio(object):
         eq3 = p[1] - self.df(p[2])
         return eq1, eq2, eq3
 
-
     def gen_portfolio_weight_dict(portfolio):
         port_dict = {}
         for holding in portfolio:
             port_dict[holding.symbol] = 0
         return port_dict
-
-
