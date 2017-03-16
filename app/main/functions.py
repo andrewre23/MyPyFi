@@ -47,13 +47,13 @@ class optimized_portfolio(object):
 
         # initialize variables for calculation
         # returns DataFrame object
-        self.rets = self.gen_returns_dataframe(self.portfolio, self.start_date)
+        self.rets = self.gen_returns_dataframe()
         # MCS sampling for portfolio returns and volatility
-        self.prets, self.pvols = self.gen_port_rets_and_vol(self.portfolio)
+        self.prets, self.pvols = self.gen_port_rets_and_vol()
         # efficient frontier returns and volatility pairs
-        self.trets, self.tvols = self.gen_efficient_frontier(portfolio)
+        self.trets, self.tvols = self.gen_efficient_frontier()
         # cleaned efficient frontier
-        self.erets, self.evols = self.clean_eff_frontier(self.trets, self.tvols)
+        self.erets, self.evols = self.clean_eff_frontier()
 
         # solve for optimized portfolio on efficient frontier (max Sharpe ratio)
         self.solve_optimized_port()
@@ -68,29 +68,29 @@ class optimized_portfolio(object):
         # rebalance optimal portfolio
         self.rebalance_opt_port()
 
-    def gen_returns_dataframe(self, portfolio, start_date):
+    def gen_returns_dataframe(self):
         # function to return DataFrame with daily returns
         # of holdings in portfolio
         import numpy as np
         import pandas as pd
         from pandas_datareader import data as web
         symbols = []
-        for holding in portfolio.holdings:
+        for holding in self.portfolio.holdings:
             symbols.append(holding.symbol)
         data = pd.DataFrame()
         for sym in symbols:
             data[sym] = web.DataReader(sym, data_source='yahoo',
-                                       start=start_date)['Adj Close']
+                                       start=self.start_date)['Adj Close']
         data.columns = symbols
         return np.log(data / data.shift(1))
 
-    def gen_port_rets_and_vol(self, portfolio, samples=2500):
+    def gen_port_rets_and_vol(self, samples=2500):
         # function to generate portfolio returns and volatility
         # based off returns from start date argument
         import numpy as np
         prets = []
         pvols = []
-        noa = portfolio.num_holdings
+        noa = self.portfolio.num_holdings
         for p in range(samples):
             weights = np.random.random(noa)
             weights /= np.sum(weights)
@@ -99,7 +99,7 @@ class optimized_portfolio(object):
                                         np.dot(self.rets.cov() * 252, weights))))
         return np.array(prets), np.array(pvols)
 
-    def gen_efficient_frontier(self, portfolio):
+    def gen_efficient_frontier(self):
         # function to generate efficient frontier of portfolio
         # returns and volatility based off returns from
         # start date argument
@@ -107,7 +107,7 @@ class optimized_portfolio(object):
         import scipy.optimize as sco
         trets = np.linspace(0.0, 0.5, 100)
         tvols = []
-        noa = portfolio.num_holdings
+        noa = self.portfolio.num_holdings
         bnds = tuple((0, 1) for x in range(noa))
         for tret in trets:
             cons = ({'type': 'eq', 'fun': lambda x: self.statistics(x)[0] - tret},
@@ -117,16 +117,16 @@ class optimized_portfolio(object):
             tvols.append(res['fun'])
         return trets, np.array(tvols)
 
-    def clean_eff_frontier(self, trets, tvols):
+    def clean_eff_frontier(self):
         # clean up efficient frontier
         # use positive values for volatility
         import numpy as np
-        ind = np.argmin(tvols)
-        evols = tvols[ind:]
-        erets = trets[ind:]
+        ind = np.argmin(self.tvols)
+        evols = self.tvols[ind:]
+        erets = self.trets[ind:]
         lastval = None
-        evols = evols.round(7)
-        erets = erets.round(7)
+        evols = evols.round(8)
+        erets = erets.round(8)
         # remove duplicate volatility values for interpolation
         for i in range(len(evols) - 1):
             if evols[i] == evols[i + 1]:
@@ -138,7 +138,6 @@ class optimized_portfolio(object):
         # solve for optimized portfolio
         import scipy.interpolate as sci
         import scipy.optimize as sco
-        import numpy as np
         if len(self.evols) < 3:
             self.tck = sci.splrep(self.evols, self.erets, k=2)
         else:
