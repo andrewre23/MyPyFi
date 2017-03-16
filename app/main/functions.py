@@ -22,13 +22,20 @@ class optimized_portfolio(object):
 
     Methods
     =======
-
-
-    Returns
-    =======
-
-
-
+    gen_returns_dataframe:
+        generate DataFrame object with daily returns for portfolio holdings
+    gen_port_rets_and_vol:
+        generate portfolio returns based on individual return/variance
+    gen_efficient_frontier:
+        generate efficient frontier of minimum risk per level of return
+    clean_eff_frontier:
+        clean values for optimization and interpolation
+    solve_optimized_port:
+        determine optimized portfolio on efficient frontier
+    solve_optimal_weights:
+        determine equivalent weights for optimized portfolio
+    plot_optimal_portfolio:
+        plot portfolio into static folder
     """
     def __init__(self, portfolio, start_date,rf=0.01):
         # initialize input parameters
