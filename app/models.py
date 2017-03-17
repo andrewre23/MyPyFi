@@ -65,12 +65,15 @@ class Portfolio(db.Model):
             holding.update_portfolio_percentage()
             if holding.shares == 0:
                 db.session.delete(holding)
-
+        db.session.commit()
 
     def create_optimal_portfolio(self):
-        # old_port = Portfolio.query.filter_by(name=self.name+'_opt').first()
-        # if old_port:
-        #     db.session.delete(old_port)
+        old_port = Portfolio.query.filter_by(name=self.name+'_opt').first()
+        if old_port:
+            for holding in old_port.holdings:
+                db.session.delete(holding)
+            db.session.delete(old_port)
+            db.session.commit()
         opt_port = Portfolio(name=self.name+'_opt',cash=self.cash)
         for holding in self.holdings:
             Holding(holding.symbol,holding.shares,holding.purch_date,holding.purch_price,opt_port.id)
@@ -138,6 +141,7 @@ class Holding(db.Model):
         self.update_market_value()
         self.update_portfolio_percentage()
         self.update_profit()
+        db.session.commit()
 
 
 class Ticker_Dataset(db.Model):
