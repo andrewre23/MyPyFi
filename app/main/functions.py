@@ -115,8 +115,8 @@ class optimized_portfolio(object):
         finally:
             plt.plot(optv, optr, 'y*', markersize=20, label='Optimal Portfolio')
             # plot lines from opt portfolio
-            plt.plot((optv, optv), (0, optr), 'b-',lw=1.0)
-            plt.plot((0, optv), (optr, optr), 'b-',lw=1.0)
+            plt.plot((optv, optv), (0, optr), 'g-',lw=1.0)
+            plt.plot((0, optv), (optr, optr), 'g-',lw=1.0)
             xlocs, xlabels = plt.xticks()
             ylocs, ylabels = plt.yticks()
             xlabels = ["{0:.0f}%".format(100*xloc) for xloc in xlocs]
