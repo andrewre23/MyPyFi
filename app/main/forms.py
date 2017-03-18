@@ -66,7 +66,7 @@ class OptimizationForm(Form):
     # form to enter time-span of returns used for portfolio optimization
     start_date = DateField('Enter start date for historical returns for optimization: (YYYY-DD-MM)',
                            validators=[DataRequired()])
-    risk_free = FloatField('Enter risk-free interest rate:', default=0.01,
+    risk_free = FloatField('Enter risk-free interest rate:', default=1.0,
                            validators=[NumberRange(min=0, max=None, message='No negative interest rates')])
     submit = SubmitField('Generate Optimal Portfolio')
 

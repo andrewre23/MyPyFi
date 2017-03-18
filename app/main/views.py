@@ -124,7 +124,7 @@ def portfolio_optimal_ask(name):
         start_date = form.start_date.data
         risk_free = round(form.risk_free.data, 4)
         portfolio = Portfolio.query.filter_by(name=name).first()
-        OptimizedPortfolio(portfolio, start_date, risk_free)
+        OptimizedPortfolio(portfolio, start_date, risk_free/100.0)
         return redirect(url_for('.portfolio_optimized', name=name + '_opt'))
     return render_template('portfolio/optimal/portfolio_optimal_ask.html', name=name, form=form)
 
