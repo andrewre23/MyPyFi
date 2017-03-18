@@ -12,7 +12,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 # class definition for optimized portfolio
 # to hold methods and attributes needed while optimizing
-class optimized_portfolio(object):
+class OptimizedPortfolio(object):
     """
     Optimized Portfolio Object
 
@@ -87,7 +87,7 @@ class optimized_portfolio(object):
     def gen_eff_plot(self):
         # create efficient frontier
         self.evols, self.erets = self.port.get_efficient_frontier(100)
-        plt.figure(figsize=(10, 6))
+        plt.figure(figsize=(10, 5))
         # plot simulation and efficient frontier
         plt.scatter(self.vols, self.rets, c=self.rets / self.vols, marker='o')
         plt.scatter(self.evols, self.erets, c=self.erets / self.evols, marker='x')
@@ -96,8 +96,8 @@ class optimized_portfolio(object):
         plt.axhline(0, color='k', ls='--', lw=2.0)
         plt.axvline(0, color='k', ls='--', lw=2.0)
         # rescale axis
-        plt.xlim(xmin = -0.05)
-        plt.ylim(ymin = -0.2)
+        plt.xlim(xmin=-0.05)
+        plt.ylim(ymin=-0.1)
         # add labels and title
         plt.xlabel(r'$\sigma$')
         plt.ylabel(r'$\mu$')

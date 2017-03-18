@@ -4,7 +4,7 @@ from ..models import Portfolio, Holding
 from . import main
 from .forms import TickerForm, PortfolioForm, PortfolioEditForm, \
     HoldingForm, HoldingEditForm, OptimizationForm, SimulationForm
-from .functions import optimized_portfolio
+from .functions import OptimizedPortfolio
 
 import datetime as dt
 
@@ -124,7 +124,7 @@ def portfolio_optimal_ask(name):
         start_date = form.start_date.data
         risk_free = round(form.risk_free.data, 4)
         portfolio = Portfolio.query.filter_by(name=name).first()
-        optimized_portfolio(portfolio, start_date, risk_free)
+        OptimizedPortfolio(portfolio, start_date, risk_free)
         return redirect(url_for('.portfolio_optimized', name=name + '_opt'))
     return render_template('portfolio/optimal/portfolio_optimal_ask.html', name=name, form=form)
 
@@ -183,7 +183,7 @@ def portfolio_simulate_ask(name):
         start_date = form.start_date.data
         risk_free = round(form.risk_free.data, 4)
         portfolio = Portfolio.query.filter_by(name=name).first()
-        optimized_portfolio(portfolio, start_date, risk_free)
+        OptimizedPortfolio(portfolio, start_date, risk_free)
         return redirect(url_for('.portfolio_optimized', name=name + '_opt'))
     return render_template('portfolio/simulation/portfolio_simulate_ask.html', name=name, form=form)
 
