@@ -7,8 +7,8 @@ from wtforms.validators import DataRequired, NumberRange, ValidationError, Optio
 
 # define PortfolioForm to add new portfolios
 class PortfolioForm(Form):
-    name = StringField('Enter portfolio name:', validators=[DataRequired()])
-    cash = FloatField('Enter cash position (USD $):',
+    name = StringField('Portfolio name:', validators=[DataRequired()])
+    cash = FloatField('Initial cash position (USD $):',
                       validators=[NumberRange(min=0, max=None, message='Cannot have negative cash holdings'),
                                   DataRequired()])
     submit = SubmitField('Add Portfolio')
@@ -16,8 +16,8 @@ class PortfolioForm(Form):
 
 # define PortfolioForm to add new portfolios
 class PortfolioEditForm(Form):
-    newname = StringField('Enter new portfolio name:', validators=[Optional()])
-    newcash = FloatField('Enter new cash position (USD $):',
+    newname = StringField('New portfolio name:', validators=[Optional()])
+    newcash = FloatField('New cash position (USD $):',
                          validators=[NumberRange(min=0, max=None, message='Cannot have negative cash holdings'),
                                      Optional()])
     submit = SubmitField('Update Data')
@@ -25,14 +25,14 @@ class PortfolioEditForm(Form):
 
 # define HoldingForm to add new portfolios
 class HoldingForm(Form):
-    symbol = StringField('Enter ticker symbol:', validators=[DataRequired()])
-    shares = IntegerField('Enter number of shares to be held:', validators=[NumberRange(min=0, max=None,
+    symbol = StringField('Ticker symbol:', validators=[DataRequired()])
+    shares = IntegerField('Number of shares to be held:', validators=[NumberRange(min=0, max=None,
                                                                                         message='Not a valid position'),
                                                                             DataRequired()])
-    purch_price = FloatField('Enter purchase price:',
+    purch_price = FloatField('Purchase price:',
                              validators=[NumberRange(min=0, max=None, message='Cannot enter negative prices'),
                                          DataRequired()])
-    purch_date = DateField('Enter date purchased: (YYYY-DD-MM)', default=dt.date.today())
+    purch_date = DateField('Date purchased: (YYYY-DD-MM)', default=dt.date.today())
     submit = SubmitField('Add Holding')
 
     # ensure symbol entered is one that yahoo finance has data for
@@ -64,29 +64,33 @@ class HoldingEditForm(Form):
 
 class OptimizationForm(Form):
     # form to enter time-span of returns used for portfolio optimization
-    start_date = DateField('Enter start date for historical returns for optimization: (YYYY-DD-MM)',
-                           validators=[DataRequired()])
-    risk_free = FloatField('Enter risk-free interest rate:', default=1.0,
+    start_date = DateField('Start date for historical returns for optimization: (YYYY-DD-MM) - Default: 6 months',
+                           validators=[DataRequired()], default=dt.date.today() - dt.timedelta(weeks=26))
+    risk_free = FloatField('Risk-free interest rate: ( % )', default=1.0,
                            validators=[NumberRange(min=0, max=None, message='No negative interest rates')])
     submit = SubmitField('Generate Optimal Portfolio')
 
 
 class SimulationForm(Form):
-    # form to enter time-span of returns used for portfolio optimization
-    start_date = DateField('Enter start date for historical returns for optimization: (YYYY-DD-MM)',
-                           validators=[DataRequired()])
-    risk_free = FloatField('Enter risk-free interest rate:', default=1.0,
+    # form to enter time-span of returns used for portfolio simulation
+    start_date = DateField('Start date for historical returns for simulation: (YYYY-DD-MM) - Default: 6 months',
+                           validators=[DataRequired()], default=dt.date.today() - dt.timedelta(weeks=26))
+    end_date = DateField('End date for simulation paths: (YYYY-DD-MM) - Default: 6 months',
+                           validators=[DataRequired()], default=dt.date.today() + dt.timedelta(weeks=26))
+    paths = IntegerField('Number of simulation paths:',
+                         validators=[DataRequired()], default=2500)
+    risk_free = FloatField('Risk-free interest rate: ( % )', default=1.0,
                            validators=[NumberRange(min=0, max=None, message='No negative interest rates')])
-    submit = SubmitField('Generate Optimal Portfolio')
+    submit = SubmitField('Generate Portfolio Simulations')
 
 
 # define TickerForm class for adding new HDF5 ticker data
 class TickerForm(Form):
     symbol = StringField('Stock symbol:', validators=[DataRequired()])
     name = StringField('Company name:')
-    start = DateField('Enter START of desired daterange (Year, Month, Day)', validators=[DataRequired()])
-    end = DateField('Enter END of desired daterange (Year, Month, Day)', validators=[DataRequired()])
-    freq = SelectField('Enter frequency of data desired (Pandas notation)', choices=[
+    start = DateField('S of desired daterange (Year, Month, Day)', validators=[DataRequired()])
+    end = DateField('End of desired daterange (Year, Month, Day)', validators=[DataRequired()])
+    freq = SelectField('Frequency of data desired (Pandas notation)', choices=[
         ('B', 'Business Day'), ('D', 'Calendar Day'), ('W', 'Weekly'), ('M', 'Month End'),
         ('SM', 'Semi-Month to End'), ('BM', 'Business-Month to End'), ('MS', 'Month Start'),
         ('SMS', 'Semi-Month to Start'), ('BMS', 'Business Month Start'), ('Q', 'Quarter End'),
