@@ -16,7 +16,11 @@ class OptimizedPortfolio(object):
     """
     Optimized Portfolio Object
 
-    Used for optimizing portfolio in app
+    -Used for optimizing portfolio in app
+    -Simulates various holding weights
+    -Determines optimal portfolio (MPT methodology)
+    -Creates new Portfolio in db with optimal holdings
+    -Plots optimal portfolio on page with simulated returns
 
     Parameters
     =========
@@ -87,7 +91,7 @@ class OptimizedPortfolio(object):
     def gen_eff_plot(self):
         # create efficient frontier
         self.evols, self.erets = self.port.get_efficient_frontier(100)
-        plt.figure(figsize=(10, 5))
+        plt.figure(figsize=(10, 6))
         # plot simulation and efficient frontier
         plt.scatter(self.vols, self.rets, c=self.rets / self.vols, marker='o')
         plt.scatter(self.evols, self.erets, c=self.erets / self.evols, marker='x')
@@ -99,8 +103,8 @@ class OptimizedPortfolio(object):
         plt.xlim(xmin=-0.05)
         plt.ylim(ymin=-0.1)
         # add labels and title
-        plt.xlabel(r'$\sigma$')
-        plt.ylabel(r'$\mu$')
+        plt.xlabel(r'$\sigma$', fontsize=20)
+        plt.ylabel(r'$\mu$', fontsize=20)
         plt.colorbar(label='Sharpe Ratio')
         plt.title('Optimal Holding based on MCS (rf ={}%)'.format(self.rf * 100))
 
@@ -110,7 +114,7 @@ class OptimizedPortfolio(object):
             cml, optv, optr = self.port.get_capital_market_line(riskless_asset=self.rf)
             plt.plot((0, 0.4), (cml(0), cml(0.4)), lw=2.0, label='CAPM Line')
         except ValueError:
-            # plot opt portfolio without CAPM line
+            # calculate optimal vol and ret - no CAPM line
             optv = self.port.get_volatility(); optr = self.port.get_portfolio_return()
         finally:
             plt.plot(optv, optr, 'y*', markersize=20, label='Optimal Portfolio')
