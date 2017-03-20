@@ -50,14 +50,13 @@ class PortfolioPlot(object):
         # prep parameters for plotting and
         # plot portfolio pie chart into static folder
         explode = [0.05 for value in values]
-        plt.close()
         plt.title('Portfolio: ' + self.portfolio.name, fontsize=30)
         plt.pie(values, autopct="%1.1f%%", startangle=90, pctdistance=0.65,
                 counterclock=False, labeldistance=1.03, explode=explode)
         plt.axis('equal')
         plt.legend(labels)
         plt.savefig(basedir[:-4] + 'static/portfolio_plot.png')
-
+        plt.close()
 
 # class definition for optimized portfolio
 # to hold methods and attributes needed while optimizing
@@ -179,6 +178,7 @@ class OptimizedPortfolio(object):
             plt.yticks(ylocs, ylabels)
             plt.legend(loc=0)
             plt.savefig(basedir[:-4] + 'static/optimized_portfolio.png')
+            plt.close()
 
     def rebalance_opt_port(self):
         # create optimal portfolio in database
