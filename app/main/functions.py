@@ -10,6 +10,55 @@ import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 
+# class definition for portfolio plot
+# to hold methods and attributes needed while plotting
+class PortfolioPlot(object):
+    """
+    Portfolio Plot Object
+
+    -Plots portfolio on portfolio page as pie chart
+
+    Parameters
+    =========
+    portfolio : Portfolio model
+        input portfolio to be plotted
+
+    Methods
+    =======
+    plot_portfolio:
+        plot portfolio pie chart into static folder
+    """
+
+    def __init__(self, portfolio):
+        # initialize input parameters
+        self.portfolio = portfolio  # portfolio to plot
+
+        # plot portfolio into static folder
+        self.plot_portfolio()
+
+    def plot_portfolio(self):
+        # get sorted list of holdings and portfolio percentages
+        labels = [holding.symbol for holding in self.portfolio.holdings]
+        values = [holding.portfolio_percent for holding in self.portfolio.holdings]
+        labels.append('Cash')
+        values.append(self.portfolio.cash / self.portfolio.market_value)
+        tups = [(values[i], labels[i]) for i in range(len(labels))]
+        tups = sorted(tups, key=lambda val: val[0], reverse=True)
+        values = [tup[0] for tup in tups]
+        labels = [tup[1] for tup in tups]
+
+        # prep parameters for plotting and
+        # plot portfolio pie chart into static folder
+        explode = [0.05 for value in values]
+        plt.close()
+        plt.title('Portfolio: ' + self.portfolio.name, fontsize=30)
+        plt.pie(values, autopct="%1.1f%%", startangle=90, pctdistance=0.65,
+                counterclock=False, labeldistance=1.03, explode=explode)
+        plt.axis('equal')
+        plt.legend(labels)
+        plt.savefig(basedir[:-4] + 'static/portfolio_plot.png')
+
+
 # class definition for optimized portfolio
 # to hold methods and attributes needed while optimizing
 class OptimizedPortfolio(object):
@@ -115,18 +164,19 @@ class OptimizedPortfolio(object):
             plt.plot((0, 0.4), (cml(0), cml(0.4)), lw=2.0, label='CAPM Line')
         except ValueError:
             # calculate optimal vol and ret - no CAPM line
-            optv = self.port.get_volatility(); optr = self.port.get_portfolio_return()
+            optv = self.port.get_volatility();
+            optr = self.port.get_portfolio_return()
         finally:
             plt.plot(optv, optr, 'y*', markersize=20, label='Optimal Portfolio')
             # plot lines from opt portfolio
-            plt.plot((optv, optv), (0, optr), 'g-',lw=1.0)
-            plt.plot((0, optv), (optr, optr), 'g-',lw=1.0)
+            plt.plot((optv, optv), (0, optr), 'g-', lw=1.0)
+            plt.plot((0, optv), (optr, optr), 'g-', lw=1.0)
             xlocs, xlabels = plt.xticks()
             ylocs, ylabels = plt.yticks()
-            xlabels = ["{0:.0f}%".format(100*xloc) for xloc in xlocs]
-            ylabels = ["{0:.0f}%".format(100*yloc) for yloc in ylocs]
+            xlabels = ["{0:.0f}%".format(100 * xloc) for xloc in xlocs]
+            ylabels = ["{0:.0f}%".format(100 * yloc) for yloc in ylocs]
             plt.xticks(xlocs, xlabels)
-            plt.yticks(ylocs,ylabels)
+            plt.yticks(ylocs, ylabels)
             plt.legend(loc=0)
             plt.savefig(basedir[:-4] + 'static/optimized_portfolio.png')
 

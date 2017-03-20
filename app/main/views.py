@@ -4,7 +4,7 @@ from ..models import Portfolio, Holding
 from . import main
 from .forms import TickerForm, PortfolioForm, PortfolioEditForm, \
     HoldingForm, HoldingEditForm, OptimizationForm, SimulationForm
-from .functions import OptimizedPortfolio
+from .functions import OptimizedPortfolio, PortfolioPlot
 
 import datetime as dt
 
@@ -62,7 +62,7 @@ def portfolio(name):
     else:
         session['portfolio'] = str(portfolio.name)
     holding_data = portfolio.holdings.order_by(Holding.portfolio_percent.desc()).all()
-
+    PortfolioPlot(portfolio)
     return render_template('portfolio/portfolio.html', name=name, holding_data=holding_data, cash=portfolio.cash)
 
 
