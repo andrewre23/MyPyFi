@@ -42,10 +42,10 @@ class PortfolioPlot(object):
         values = [holding.portfolio_percent for holding in self.portfolio.holdings]
         labels.append('Cash')
         values.append(self.portfolio.cash / self.portfolio.market_value)
-        tups = [(values[i], labels[i]) for i in range(len(labels))]
-        tups = sorted(tups, key=lambda val: val[0], reverse=True)
-        values = [tup[0] for tup in tups]
-        labels = [tup[1] for tup in tups]
+        pairs = [(values[i], labels[i]) for i in range(len(labels))]
+        pairs = sorted(pairs, key=lambda val: val[0], reverse=True)
+        values = [pair[0] for pair in pairs]
+        labels = [pair[1] for pair in pairs]
 
         # prep parameters for plotting and
         # plot portfolio pie chart into static folder
