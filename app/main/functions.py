@@ -199,3 +199,63 @@ class OptimizedPortfolio(object):
         # adjust cash-holdings based on new invested total
         self.opt_port.cash += (self.portfolio.market_value - self.opt_port.market_value)
         self.opt_port.update()
+
+
+
+# class definition for simulated portfolio
+# to hold methods and attributes needed while simulating
+class SimulatedPortfolio(object):
+    """
+    Simulated Portfolio Object
+
+    -Used for simulating portfolio in app
+    -Simulates potential holding paths for portfolio
+    -Uses Geometric Brownian Motion (GBM) to model price movements
+    -Plots simulated paths and statistics on results
+
+    Parameters
+    =========
+    portfolio : Portfolio model
+        input portfolio to be simulated
+    start_date : datetime.date
+        start of time-span for historical return analysis
+    end_date : datetime.date
+        end date of simulation
+    paths : integer
+        number of simulated paths for portfolio
+    rf : float
+        risk-free interest rate
+
+
+    Methods
+    =======
+    initialize_parameters:
+        initialize input parameters and portfolio market env. data
+    """
+
+    def __init__(self, portfolio, start_date, end_date, paths, rf=0.01):
+        # initialize input parameters
+        self.portfolio = portfolio  # portfolio to simulate
+        self.start_date = start_date  # start date for historical returns
+        self.end_date = end_date # end date for simulation
+        self.paths = paths # number of simulation paths
+        self.rf = rf  # risk-free interest rate
+
+        # add dx parameters needed for portfolio
+        self.initialize_parameters()
+
+        # determine correlations between instruments
+        self.generate_correlations()
+
+    def initialize_parameters(self):
+        # add dx parameters needed for portfolio
+        self.ma = market_environment('ma', self.start_date)
+        self.ma.add_list('symbols', [holding.symbol for holding in self.portfolio.holdings])
+        self.ma.add_constant('source', 'google')
+        self.ma.add_constant('final_date', dt.datetime.today())
+        # create portfolio object
+        self.port = mean_variance_portfolio('optimizing_port', self.ma)
+
+    def generate_correlations(self):
+        # determine correlations between instruments
+        pass
