@@ -45,18 +45,17 @@ class PortfolioPlot(object):
         pairs = [(values[i], labels[i]) for i in range(len(labels))]
         pairs = sorted(pairs, key=lambda val: val[0], reverse=True)
         values = [pair[0] for pair in pairs]
-        labels = [pair[1] for pair in pairs]
 
         # prep parameters for plotting and
         # plot portfolio pie chart into static folder
-        explode = [0.05 for value in values]
-        plt.title('Portfolio: ' + self.portfolio.name, fontsize=30)
-        plt.pie(values, autopct="%1.1f%%", startangle=90, pctdistance=0.65,
-                counterclock=False, labeldistance=1.03, explode=explode)
+        plt.title('Portfolio: ' + self.portfolio.name, fontsize=30, y=1.05)
+        patches, labels = plt.pie(values, startangle=90, pctdistance=0.65, counterclock=False, labeldistance=1.03)
         plt.axis('equal')
-        plt.legend(labels)
-        plt.savefig(basedir[:-4] + 'static/portfolio_plot.png')
+        labels = [pair[1] for pair in pairs]
+        plt.legend(patches, labels, loc='right center', bbox_to_anchor=(0.1, 1), fontsize=18)
+        plt.savefig(basedir[:-4] + 'static/portfolio_plot.png', bbox_inches='tight')
         plt.close()
+
 
 # class definition for optimized portfolio
 # to hold methods and attributes needed while optimizing
@@ -172,8 +171,8 @@ class OptimizedPortfolio(object):
             plt.plot((optv, optv), (0, optr), 'g-', lw=1.0)
             plt.plot((0, optv), (optr, optr), 'g-', lw=1.0)
             if optr > 0.75:
-                plt.xlim(xmax=round(2.5*optv/0.5, 0)*0.5, xmin=-0.05)
-                plt.ylim(ymax=round(2.5*optr/0.5, 0)*0.5, ymin=-0.1)
+                plt.xlim(xmax=round(2.5 * optv / 0.5, 0) * 0.5, xmin=-0.05)
+                plt.ylim(ymax=round(2.5 * optr / 0.5, 0) * 0.5, ymin=-0.1)
             xlocs, xlabels = plt.xticks()
             ylocs, ylabels = plt.yticks()
             xlabels = ["{0:.0f}%".format(100 * xloc) for xloc in xlocs]
@@ -203,7 +202,6 @@ class OptimizedPortfolio(object):
         # adjust cash-holdings based on new invested total
         self.opt_port.cash += (self.portfolio.market_value - self.opt_port.market_value)
         self.opt_port.update()
-
 
 
 # class definition for simulated portfolio
@@ -241,8 +239,8 @@ class SimulatedPortfolio(object):
         # initialize input parameters
         self.portfolio = portfolio  # portfolio to simulate
         self.start_date = start_date  # start date for historical returns
-        self.end_date = end_date # end date for simulation
-        self.paths = paths # number of simulation paths
+        self.end_date = end_date  # end date for simulation
+        self.paths = paths  # number of simulation paths
         self.rf = rf  # risk-free interest rate
 
         # add dx parameters needed for portfolio
