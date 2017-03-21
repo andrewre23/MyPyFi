@@ -93,6 +93,7 @@ class OptimizedPortfolio(object):
 
     def __init__(self, portfolio, start_date, rf=0.01):
         # initialize input parameters
+        import numpy as np
         self.portfolio = portfolio  # portfolio to optimize
         self.start_date = start_date  # start date for historical returns
         self.rf = rf  # risk-free interest rate
@@ -117,7 +118,7 @@ class OptimizedPortfolio(object):
         # add dx parameters needed for portfolio
         self.ma = market_environment('ma', self.start_date)
         self.ma.add_list('symbols', [holding.symbol for holding in self.portfolio.holdings])
-        self.ma.add_constant('source', 'google')
+        self.ma.add_constant('source', 'yahoo')
         self.ma.add_constant('final_date', dt.datetime.today())
         # create portfolio object
         self.port = mean_variance_portfolio('optimizing_port', self.ma)
@@ -170,6 +171,9 @@ class OptimizedPortfolio(object):
             # plot lines from opt portfolio
             plt.plot((optv, optv), (0, optr), 'g-', lw=1.0)
             plt.plot((0, optv), (optr, optr), 'g-', lw=1.0)
+            if optr > 0.75:
+                plt.xlim(xmax=round(2.5*optv/0.5, 0)*0.5, xmin=-0.05)
+                plt.ylim(ymax=round(2.5*optr/0.5, 0)*0.5, ymin=-0.1)
             xlocs, xlabels = plt.xticks()
             ylocs, ylabels = plt.yticks()
             xlabels = ["{0:.0f}%".format(100 * xloc) for xloc in xlocs]
