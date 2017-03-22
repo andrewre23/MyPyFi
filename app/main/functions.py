@@ -151,8 +151,8 @@ class OptimizedPortfolio(object):
         plt.xlim(xmin=-0.05)
         plt.ylim(ymin=-0.1)
         # add labels and title
-        plt.xlabel(r'$\sigma$', fontsize=20)
-        plt.ylabel(r'$\mu$', fontsize=20)
+        plt.xlabel(r'$\sigma$', fontsize=25)
+        plt.ylabel(r'$\mu$', fontsize=25)
         plt.colorbar(label='Sharpe Ratio')
         plt.title('Optimal Holding based on MCS (rf ={}%)'.format(self.rf * 100))
 
