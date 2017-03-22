@@ -52,7 +52,7 @@ class PortfolioPlot(object):
         plt.axis('equal')
         labels = [pair[1] for pair in pairs]
         labels.append('Cash')
-        plt.legend(patches, labels, loc='right center', bbox_to_anchor=(0.1, 1), fontsize=18)
+        plt.legend(patches, labels, bbox_to_anchor=(0.1, 1), fontsize=18)
         plt.savefig(basedir[:-4] + 'static/portfolio_plot.png', bbox_inches='tight')
         plt.close()
 

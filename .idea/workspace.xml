@@ -49,8 +49,8 @@
       <file leaf-file-name="functions.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/main/functions.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="324">
-              <caret line="46" column="0" lean-forward="true" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
+            <state relative-caret-position="460">
+              <caret line="54" column="36" lean-forward="false" selection-start-line="54" selection-start-column="36" selection-end-line="54" selection-end-column="36" />
               <folding>
                 <element signature="e#0#17#0" expanded="true" />
               </folding>
@@ -565,13 +565,6 @@
       <option name="presentableId" value="Default" />
       <updated>1475208834294</updated>
     </task>
-    <task id="LOCAL-00079" summary="edited stylesheet">
-      <created>1487613289851</created>
-      <option name="number" value="00079" />
-      <option name="presentableId" value="LOCAL-00079" />
-      <option name="project" value="LOCAL" />
-      <updated>1487613289866</updated>
-    </task>
     <task id="LOCAL-00080" summary="edited stylesheet">
       <created>1487613907299</created>
       <option name="number" value="00080" />
@@ -908,7 +901,14 @@
       <option name="project" value="LOCAL" />
       <updated>1490190189197</updated>
     </task>
-    <option name="localTasksCounter" value="128" />
+    <task id="LOCAL-00128" summary="changed optimal portfolio code to be OOP">
+      <created>1490192494244</created>
+      <option name="number" value="00128" />
+      <option name="presentableId" value="LOCAL-00128" />
+      <option name="project" value="LOCAL" />
+      <updated>1490192494244</updated>
+    </task>
+    <option name="localTasksCounter" value="129" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1303,8 +1303,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/main/functions.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="46" column="0" lean-forward="true" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
+        <state relative-caret-position="460">
+          <caret line="54" column="36" lean-forward="false" selection-start-line="54" selection-start-column="36" selection-end-line="54" selection-end-column="36" />
           <folding>
             <element signature="e#0#17#0" expanded="true" />
           </folding>
