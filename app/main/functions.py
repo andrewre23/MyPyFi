@@ -154,7 +154,7 @@ class OptimizedPortfolio(object):
         plt.xlabel(r'$\sigma$', fontsize=25)
         plt.ylabel(r'$\mu$', fontsize=25)
         plt.colorbar(label='Sharpe Ratio')
-        plt.title('Optimal Holding based on MCS (rf ={}%)'.format(self.rf * 100))
+        plt.title('Optimal Holding based on MCS (rf ={}%)'.format(self.rf * 100), fontsize=20, y=1.02)
 
     def plot_capm_opt_save(self):
         try:
