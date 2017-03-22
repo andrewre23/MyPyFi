@@ -40,11 +40,10 @@ class PortfolioPlot(object):
         # get sorted list of holdings and portfolio percentages
         labels = [holding.symbol for holding in self.portfolio.holdings]
         values = [holding.portfolio_percent for holding in self.portfolio.holdings]
-        labels.append('Cash')
-        values.append(self.portfolio.cash / self.portfolio.market_value)
         pairs = [(values[i], labels[i]) for i in range(len(labels))]
         pairs = sorted(pairs, key=lambda val: val[0], reverse=True)
         values = [pair[0] for pair in pairs]
+        values.append(self.portfolio.cash / self.portfolio.market_value)
 
         # prep parameters for plotting and
         # plot portfolio pie chart into static folder
@@ -52,7 +51,8 @@ class PortfolioPlot(object):
         patches, labels = plt.pie(values, startangle=90, pctdistance=0.65, counterclock=False, labeldistance=1.03)
         plt.axis('equal')
         labels = [pair[1] for pair in pairs]
-        plt.legend(patches, labels, loc='center right', bbox_to_anchor=(0.1, 1), fontsize=18)
+        labels.append('Cash')
+        plt.legend(patches, labels, loc='right center', bbox_to_anchor=(0.1, 1), fontsize=18)
         plt.savefig(basedir[:-4] + 'static/portfolio_plot.png', bbox_inches='tight')
         plt.close()
 
