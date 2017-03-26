@@ -124,8 +124,12 @@ def portfolio_optimal_ask(name):
         start_date = form.start_date.data
         risk_free = round(form.risk_free.data, 4)
         portfolio = Portfolio.query.filter_by(name=name).first()
-        OptimizedPortfolio(portfolio, start_date, risk_free / 100.0)
-        return redirect(url_for('.portfolio_optimized', name=name + '_opt'))
+        if portfolio.num_holdings > 2:
+            OptimizedPortfolio(portfolio, start_date, risk_free / 100.0)
+            return redirect(url_for('.portfolio_optimized', name=name + '_opt'))
+        else:
+            flash('Must have more than 2 holdings in your portfolio to run optimization!')
+            return redirect(url_for('.portfolio',name=name))
     return render_template('portfolio/optimal/portfolio_optimal_ask.html', name=name, form=form)
 
 
